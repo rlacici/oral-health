@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>랜덤 구강건강 메시지</title>
+  <link href="https://cdn.jsdelivr.net/npm/font-gmarket@1.0.1/style.css" rel="stylesheet">
+
+  <style>
+    
+    img.uniform {
+  max-width: 90%;
+  max-height: 450px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin:100px auto 0 auto;
+}
+
+    body {
+  font-family: 'Gmarket Sans', sans-serif;
+}
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background-color: #f9f9f9;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 18px;
+      margin: 0;
+      padding: 12px;
+      color: #004080;
+    }
+
+    .icon {
+      font-size: 24px;
+      margin-right: 6px;
+    }
+
+    .title-text {
+      color: #009ec1;
+      font-weight: bold;
+    }
+
+img {
+  width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 12px;
+  margin-top: 50px;
+}
+
+    @keyframes blinkTwice {
+      0%, 100% { opacity: 1; }
+      20%, 60% { opacity: 0; }
+      40%, 80% { opacity: 1; }
+    }
+
+    #badgeMessage {
+      position: absolute;
+      top: 130px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #fff5d1;
+      border: 2px solid #ffc107;
+      padding: 10px 60px;
+      border-radius: 12px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      z-index: 1000;
+      box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+      max-width: 90%;
+      white-space: nowrap;
+      display: none;
+      animation-iteration-count: 1;
+    }
+    
+    .bigBadge {
+  font-size: 26px;
+  padding: 20px 80px;
+  border: 4px solid #ff9800;
+  background-color: #fff3e0;
+}
+
+
+  
+    .bigBadge {
+      font-size: 26px;
+      padding: 20px 80px;
+      border: 4px solid #ff9800;
+      background-color: #fff3e0;
+    }
+    </style>
+
+  
+</head>
+<body>
+  <h1>
+    <span class="icon">🦷</span>
+    <span class="title-text">[미추홀구보건소]구강건강 메시지</span>
+    <span class="icon">🦷</span>
+  </h1>
+  <p id="visitCountText" style="font-weight: bold; font-size: 18px; color: #555;"></p>
+  <script>
+  const count = localStorage.getItem("visitCount") || "0";
+  document.getElementById("visitCountText").textContent =
+    `지금까지 ${count}번 태그했어요! 🎉`;
+
+    function sendAnonymousStats(image) {
+      const fileId = image.url.split("/").pop().split(".")[0];
+      const nameWithId = `${image.name} [${fileId}]`;
+      const today = new Date().toISOString().split("T")[0]; // 날짜만 추출
+      const scriptURL = "https://script.google.com/macros/s/AKfycbwOKw7C1eYxnJQvi-2Z1I0xCX8tW2nQhJ74ORxAH8udsmS-uOf7bfJlTeHklSMv7RcEcA/exec";
+      const fullURL = `${scriptURL}?imageId=${encodeURIComponent(nameWithId)}&date=${encodeURIComponent(today)}`;
+
+      fetch(fullURL)
+        .then(response => {
+          if (response.ok) {
+            console.log("✅ 익명 통계 전송 성공:", nameWithId);
+          } else {
+            console.error("❌ 익명 통계 전송 실패");
+          }
+        })
+        .catch(error => {
+          console.error("❌ 네트워크 오류", error);
+        });
+    }
+    
+    function showBadgeMessage(message, isBig = false) {
+  const badgeEl = document.getElementById("badgeMessage");
+  badgeEl.textContent = message;
+  badgeEl.style.display = "block";
+  badgeEl.style.animation = "blinkTwice 3s ease";
+
+  // 크기 조정
+  if (isBig) {
+    badgeEl.classList.add("bigBadge");
+  } else {
+    badgeEl.classList.remove("bigBadge");
+  }
+
+  setTimeout(() => {
+    badgeEl.style.display = "none";
+    badgeEl.style.animation = "";
+  }, 3000);
+}
+
+// 방문 카운트 처리
+let count = parseInt(localStorage.getItem("visitCount") || "0") + 1;
+localStorage.setItem("visitCount", count);
+
+}
+
+  </script>
+
+
+  <div id="badgeMessage"></div>
+
+  <div id="imageContainer">
+    <p>이미지를 불러오는 중입니다...</p>
+  </div>
+
+  <script>
+    
+    const images = [
+      { url: "https://i.imgur.com/9BExF6D.jpg", weight: 6, name: "치약만 있는 그림(1,450ppm)" },
+      { url: "https://i.imgur.com/kGL6Rm8.jpg", weight: 6, name: "혀내밀고 혀클리너로 세균닦아내기" },
+      { url: "https://i.imgur.com/LZ0CFlR.jpg", weight: 6, name: "고불소가 정답" },
+      { url: "https://i.imgur.com/U2phf8z.jpg", weight: 6, name: "칫솔 3개월 교체" },
+      { url: "https://i.imgur.com/CgytXI1.jpg", weight: 6, name: "치료보단 정기적인 구강검진" },
+      { url: "https://i.imgur.com/R8I8SVL.jpg", weight: 6, name: "잇몸에서 피가 나면 바로 치과에 가요" },
+      { url: "https://i.imgur.com/b5cfDqq.jpg", weight: 3, name: "달콤하게 즐기고 싶다면, 자일리톨" },
+      { url: "https://i.imgur.com/JXAb6J1.jpg", weight: 3, name: "잠자기 전 양치" },
+      { url: "https://i.imgur.com/7zaqDSV.jpg", weight: 3, name: "건강한 치아는 평생을 함께" },
+      { url: "https://i.imgur.com/ScqFB4I.jpg", weight: 3, name: "숨쉬는 것도 힙하게" },
+      { url: "https://i.imgur.com/dbQ3Kc3.jpg", weight: 3, name: "칫솔질의 마지막은 혀닦기" },
+      { url: "https://i.imgur.com/ZNAwF4x.jpg", weight: 6, name: "향기나는 내가좋다" },
+      { url: "https://i.imgur.com/l4cjFsZ.jpg", weight: 6, name: "양치, 귀찮은게 아니라 당연한거" },
+      { url: "https://i.imgur.com/W9WWHx6.jpg", weight: 6, name: "불소치약 찐템" },
+      { url: "https://i.imgur.com/uDk7raM.jpg", weight: 6, name: "양치스킵" },
+      { url: "https://i.imgur.com/8wSONpD.jpg", weight: 6, name: "치실 클린 업그레이드" },
+      { url: "https://i.imgur.com/6R47ZPA.jpg", weight: 6, name: "잇몸 출혈 시 신호 치과 GO" },
+      { url: "https://i.imgur.com/lAqSDUb.jpg", weight: 3, name: "물을 자주 마시기" },
+      { url: "https://i.imgur.com/39NLXvJ.jpg", weight: 3, name: "치실은 치아사이 청소기" },
+      { url: "https://i.imgur.com/SzJE3em.jpg", weight: 3, name: "숨쉴 때 티난다" },
+      { url: "https://i.imgur.com/NzhNN3l.jpg", weight: 3, name: "달콤한 간식은 이제그만" },
+      { url: "https://i.imgur.com/YZqBzYB.jpg", weight: 3, name: "거울보며 꼼곰하게" },
+      { url: "https://i.imgur.com/Y8EXRH4.jpg", weight: 3, name: "내 입속 건강지킴이" },
+      { url: "https://i.imgur.com/nqYIPcl.jpg", weight: 3, name: "세균파티" },
+      { url: "https://i.imgur.com/VD7OXyD.jpg", weight: 6, name: "양치는 타이밍" },
+       ];
+
+
+    function weightedRandom(images) {
+  const totalWeight = images.reduce((sum, img) => sum + img.weight, 0);
+  const rand = Math.random() * totalWeight;
+  let cumulative = 0;
+  for (const img of images) {
+    cumulative += img.weight;
+    if (rand < cumulative) return img;
+  }
+}
+
+
+    function getUserUUID() {
+      let uuid = localStorage.getItem("userUUID");
+      if (!uuid) {
+        uuid = crypto.randomUUID();
+        localStorage.setItem("userUUID", uuid);
+      }
+      return uuid;
+    }
+
+    function sendVisitLog(image) {
+      const uuid = getUserUUID();
+      const fileId = image.url.split("/").pop().split(".")[0];
+      const nameWithId = `${image.name} [${fileId}]`;
+      const scriptURL = "https://script.google.com/macros/s/AKfycby9yb7Bm-9nLfEpPpDDD-kF8CnU0Mtkw4ehxEdRn4mHKJ_wzrvf1ws8lkMzj8RTG_Ly_Q/exec";
+      const fullURL = `${scriptURL}?uuid=${encodeURIComponent(uuid)}&imageId=${encodeURIComponent(nameWithId)}`;
+
+      fetch(fullURL)
+        .then(() => {
+          let count = parseInt(localStorage.getItem("visitCount") || "0") + 1;
+          localStorage.setItem("visitCount", count);
+        document.getElementById("visitCountText").textContent =
+  `지금까지 ${count}번 태그했어요! 🎉`;
+          setTimeout(() => checkBadgeAndShow(count), 10);
+        });
+    }
+
+    function checkBadgeAndShow(count) {
+      let message = "";
+      if (count === 1) message = "👣 첫걸음 뱃지! 시작이 반이에요!";
+      else if (count === 3) message = "🔄 습관 루틴 뱃지 획득!";
+      else if (count === 5) message = "🪥 양치 마스터 입문!";
+      else if (count === 7) message = "🛡️ 충치 방어력 +1!";
+      else if (count === 10) message = "🎉 10회 태그 뱃지 획득!";
+      else if (count === 12) message = "💪 건강 습관 꾸준히!";
+      else if (count === 15) message = "🧠 지식 쑥쑥 뱃지!";
+      else if (count === 17) message = "🎨 구강건강 정복 중!";
+      else if (count === 20) message = "🏆 20회 이상! 구강건강 챔피언!";
+      else if (count === 22) message = "🧼 치아 미남미녀 등극!";
+      else if (count === 25) message = "💎 25회 태그달성! 구강 마스터!";
+      else if (count === 27) message = "🧚 깨끗요정 강림";
+      else if (count === 30) message = "🌟 30회 돌파! 계속해서 태그해보자!";
+      else if (count === 33) message = "🧬 세균을 물리치는 자!";
+      else if (count === 35) message = "🦸 구강지킴이 히어로!";
+      else if (count === 40) message = "😎 40번이나 태그했어요!";
+      else if (count === 45) message = "📚 구강건강 지식왕 등극!";
+      else if (count === 50) message = "🎯 지금까지 몇개의 이미지를 보았나요?";
+      else if (count === 55) message = "🪄 너의 건강 루틴 완성!";
+      else if (count === 60) message = "🏅 충치사냥꾼 뱃지!";
+      else if (count === 65) message = "🌱 작은 습관이 큰 변화를 만들어요!";
+      else if (count === 70) message = "🚿 입냄새 걱정 끝~ 뱃지!";
+      else if (count === 80) message = "📈 건강 그래프가 올라가요!";
+      else if (count === 85) message = "🛁 입속 청소왕 등극!";
+      else if (count === 90) message = "📅 매일의 실천, 나를 바꿔요!";
+      else if (count === 95) message = "🪞 거울 속 당신, 더 반짝여요!";
+      else if (count === 100) message = "🧙 구강 마법사 등극!";
+      else if (count === 110) message = "🌌 궁극의 치아 우주지배자!";  
+      else if (count === 120) message = "🦷 궁극의 치아 수호자!";  
+      else if (count === 121) message = "🎁 퀴즈의 정답은 25개입니다!"; 
+      else if (count === 122) message = "🎁 퀴즈의 정답은 25개입니다!"; 
+      else if (count === 123) message = "🎁 퀴즈의 정답은 25개입니다!"; 
+      else if (count === 123) message = "🎁 정답을 꼭 제출해주세요!";   
+      if (message) showBadgeMessage(message);
+    }
+
+    function showBadgeMessage(message) {
+      const badgeEl = document.getElementById("badgeMessage");
+      badgeEl.textContent = message;
+      badgeEl.style.display = "block";
+      badgeEl.style.animation = "blinkTwice 4s ease";
+      setTimeout(() => {
+        badgeEl.style.display = "none";
+        badgeEl.style.animation = "";
+      }, 5000);
+    }
+
+    const selectedImage = weightedRandom(images);
+    // 퀴즈 이미지는 익명 통계에 기록하지 않음
+if (selectedImage.name !== "퀴즈 참여 유도") {
+sendAnonymousStats(selectedImage);
+}
+
+    
+    const container = document.getElementById("imageContainer");
+    container.innerHTML = `<img src="${selectedImage.url}" alt="구강건강 이미지" class="uniform">`;
+
+    sendVisitLog(selectedImage);
+      
+    function sendAnonymousStats(image) {
+      const fileId = image.url.split("/").pop().split(".")[0];
+      const nameWithId = `${image.name} [${fileId}]`;
+      const today = new Date().toISOString().split("T")[0]; // 날짜만 추출
+      const scriptURL = "https://script.google.com/macros/s/AKfycbyWgIsOr573dAJgePzSVBkrEA71jFPa8JqQu0Q1fJm8pP5gJhnEFIzJYISjOapav5Fz3A/exec";
+      const fullURL = `${scriptURL}?imageId=${encodeURIComponent(fileId)}&imageName=${encodeURIComponent(image.name)}`;
+      
+      fetch(fullURL)
+        .then(response => {
+          if (response.ok) {
+            console.log("✅ 익명 통계 전송 성공:", nameWithId);
+          } else {
+            console.error("❌ 익명 통계 전송 실패");
+          }
+        })
+        .catch(error => {
+          console.error("❌ 네트워크 오류", error);
+        });
+    }
+
+
+  </script>
+
+  <div id="badgeMessage"></div>
+  <script>
+    function showBadgeMessage(message, isBig = false) {
+      const badgeEl = document.getElementById("badgeMessage");
+      badgeEl.textContent = message;
+      badgeEl.style.display = "block";
+      badgeEl.style.animation = "blinkTwice 3s ease";
+
+      if (isBig) {
+        badgeEl.classList.add("bigBadge");
+      } else {
+        badgeEl.classList.remove("bigBadge");
+      }
+
+      setTimeout(() => {
+        badgeEl.style.display = "none";
+        badgeEl.style.animation = "";
+      }, 3000);
+    }
+
+
+  </script>
+</body>
+
+</html>
