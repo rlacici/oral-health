@@ -1,0 +1,59 @@
+name: Switch to 2026 challenge
+
+on:
+  schedule:
+    # 2026-10-19 09:00 Korea time = 2026-10-19 00:00 UTC
+    - cron: "0 0 19 10 *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  switch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check switch time (Korea)
+        id: guard
+        run: |
+          SWITCH_UTC=$(date -u -d "2026-10-19 00:00:00" +%s)
+          NOW_UTC=$(date -u +%s)
+          echo "now_utc=$NOW_UTC switch_utc=$SWITCH_UTC"
+          if [ -f .switched-to-2026 ]; then
+            echo "Already switched."
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [ "$NOW_UTC" -lt "$SWITCH_UTC" ]; then
+            echo "Too early for the scheduled switch."
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "should_run=true" >> "$GITHUB_OUTPUT"
+
+      - name: Copy 2026 site files
+        if: steps.guard.outputs.should_run == 'true'
+        run: |
+          git clone --depth 1 https://github.com/rlacici/health-challenge-2026.git /tmp/hc2026
+          rsync -a --delete \
+            --exclude ".git/" \
+            --exclude ".github/" \
+            --exclude ".switched-to-2026" \
+            /tmp/hc2026/ ./
+          date -u +"%Y-%m-%dT%H:%M:%SZ" > .switched-to-2026
+
+      - name: Commit and push
+        if: steps.guard.outputs.should_run == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No file changes."
+            exit 0
+          fi
+          git commit --trailer "Co-authored-by: Cursor <cursoragent@cursor.com>" -m "Switch NFC site to 2026 challenge"
+          git push
+
