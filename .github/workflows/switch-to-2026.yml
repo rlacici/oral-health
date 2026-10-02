@@ -2,8 +2,8 @@ name: Switch to 2026 challenge
 
 on:
   schedule:
-    # 2026-10-19 09:00 Korea time = 2026-10-19 00:00 UTC
-    - cron: "0 0 19 10 *"
+    # 2026-10-19 08:30 Korea time = 2026-10-18 23:30 UTC
+    - cron: "30 23 18 10 *"
   workflow_dispatch:
 
 permissions:
@@ -18,7 +18,7 @@ jobs:
       - name: Check switch time (Korea)
         id: guard
         run: |
-          SWITCH_UTC=$(date -u -d "2026-10-19 00:00:00" +%s)
+          SWITCH_UTC=$(date -u -d "2026-10-19 08:30:00+09:00" +%s)
           NOW_UTC=$(date -u +%s)
           echo "now_utc=$NOW_UTC switch_utc=$SWITCH_UTC"
           if [ -f .switched-to-2026 ]; then
