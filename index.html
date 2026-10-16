@@ -127,39 +127,9 @@ img {
   </h1>
   <p id="visitCountText" style="font-weight: bold; font-size: 18px; color: #555;"></p>
   <script>
-  const count = localStorage.getItem("visitCount") || "0";
-  document.getElementById("visitCountText").textContent =
-    `지금까지 ${count}번 태그했어요! 🎉`;
-
-    function sendAnonymousStats(image) {
-      // 예전 통계 주소는 쓰지 않습니다. 아래 sendVisitLog에서 올해 시트로 보냅니다.
-    }
-    
-    function showBadgeMessage(message, isBig = false) {
-  const badgeEl = document.getElementById("badgeMessage");
-  badgeEl.textContent = message;
-  badgeEl.style.display = "block";
-  badgeEl.style.animation = "blinkTwice 3s ease";
-
-  // 크기 조정
-  if (isBig) {
-    badgeEl.classList.add("bigBadge");
-  } else {
-    badgeEl.classList.remove("bigBadge");
-  }
-
-  setTimeout(() => {
-    badgeEl.style.display = "none";
-    badgeEl.style.animation = "";
-  }, 3000);
-}
-
-// 방문 카운트 처리
-let count = parseInt(localStorage.getItem("visitCount") || "0") + 1;
-localStorage.setItem("visitCount", count);
-
-}
-
+    const shownCount = localStorage.getItem("visitCount") || "0";
+    document.getElementById("visitCountText").textContent =
+      "지금까지 " + shownCount + "번 태그했어요! 🎉";
   </script>
 
 
@@ -295,15 +265,8 @@ localStorage.setItem("visitCount", count);
     }
 
     const selectedImage = weightedRandom(images);
-    // 퀴즈 이미지는 익명 통계에 기록하지 않음
-if (selectedImage.name !== "퀴즈 참여 유도") {
-sendAnonymousStats(selectedImage);
-}
-
-    
     const container = document.getElementById("imageContainer");
-    container.innerHTML = `<img src="${selectedImage.url}" alt="구강건강 이미지" class="uniform">`;
-
+    container.innerHTML = '<img src="' + selectedImage.url + '" alt="구강건강 이미지" class="uniform" referrerpolicy="no-referrer">';
     sendVisitLog(selectedImage);
 
 
