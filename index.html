@@ -132,23 +132,7 @@ img {
     `지금까지 ${count}번 태그했어요! 🎉`;
 
     function sendAnonymousStats(image) {
-      const fileId = image.url.split("/").pop().split(".")[0];
-      const nameWithId = `${image.name} [${fileId}]`;
-      const today = new Date().toISOString().split("T")[0]; // 날짜만 추출
-      const scriptURL = "https://script.google.com/macros/s/AKfycbwOKw7C1eYxnJQvi-2Z1I0xCX8tW2nQhJ74ORxAH8udsmS-uOf7bfJlTeHklSMv7RcEcA/exec";
-      const fullURL = `${scriptURL}?imageId=${encodeURIComponent(nameWithId)}&date=${encodeURIComponent(today)}`;
-
-      fetch(fullURL)
-        .then(response => {
-          if (response.ok) {
-            console.log("✅ 익명 통계 전송 성공:", nameWithId);
-          } else {
-            console.error("❌ 익명 통계 전송 실패");
-          }
-        })
-        .catch(error => {
-          console.error("❌ 네트워크 오류", error);
-        });
+      // 예전 통계 주소는 쓰지 않습니다. 아래 sendVisitLog에서 올해 시트로 보냅니다.
     }
     
     function showBadgeMessage(message, isBig = false) {
@@ -237,20 +221,31 @@ localStorage.setItem("visitCount", count);
     }
 
     function sendVisitLog(image) {
-      const uuid = getUserUUID();
-      const fileId = image.url.split("/").pop().split(".")[0];
-      const nameWithId = `${image.name} [${fileId}]`;
-      const scriptURL = "https://script.google.com/macros/s/AKfycby9yb7Bm-9nLfEpPpDDD-kF8CnU0Mtkw4ehxEdRn4mHKJ_wzrvf1ws8lkMzj8RTG_Ly_Q/exec";
-      const fullURL = `${scriptURL}?uuid=${encodeURIComponent(uuid)}&imageId=${encodeURIComponent(nameWithId)}`;
+      let visitCount = parseInt(localStorage.getItem("visitCount") || "0") + 1;
+      localStorage.setItem("visitCount", visitCount);
+      document.getElementById("visitCountText").textContent =
+        `지금까지 ${visitCount}번 태그했어요! 🎉`;
+      setTimeout(() => checkBadgeAndShow(visitCount), 10);
+      recordChallengeTag();
+    }
 
-      fetch(fullURL)
-        .then(() => {
-          let count = parseInt(localStorage.getItem("visitCount") || "0") + 1;
-          localStorage.setItem("visitCount", count);
-        document.getElementById("visitCountText").textContent =
-  `지금까지 ${count}번 태그했어요! 🎉`;
-          setTimeout(() => checkBadgeAndShow(count), 10);
-        });
+    function recordChallengeTag() {
+      const appsScriptUrl = "https://script.google.com/macros/s/AKfycbzUQCQP5co3iV3PCqtsu5gz6Zf4kc3DSdjiATTN2OsPRDSpfcXCC88vp6WDowO42ZRkgw/exec";
+      const callbackName = "hc_bg_" + Date.now();
+      let script;
+      window[callbackName] = function () {
+        delete window[callbackName];
+        if (script && script.parentNode) {
+          script.parentNode.removeChild(script);
+        }
+      };
+      script = document.createElement("script");
+      script.src = appsScriptUrl
+        + "?callback=" + callbackName
+        + "&imageId=" + encodeURIComponent("키링")
+        + "&source=nfc"
+        + "&t=" + Date.now();
+      document.head.appendChild(script);
     }
 
     function checkBadgeAndShow(count) {
@@ -310,26 +305,6 @@ sendAnonymousStats(selectedImage);
     container.innerHTML = `<img src="${selectedImage.url}" alt="구강건강 이미지" class="uniform">`;
 
     sendVisitLog(selectedImage);
-      
-    function sendAnonymousStats(image) {
-      const fileId = image.url.split("/").pop().split(".")[0];
-      const nameWithId = `${image.name} [${fileId}]`;
-      const today = new Date().toISOString().split("T")[0]; // 날짜만 추출
-      const scriptURL = "https://script.google.com/macros/s/AKfycbyWgIsOr573dAJgePzSVBkrEA71jFPa8JqQu0Q1fJm8pP5gJhnEFIzJYISjOapav5Fz3A/exec";
-      const fullURL = `${scriptURL}?imageId=${encodeURIComponent(fileId)}&imageName=${encodeURIComponent(image.name)}`;
-      
-      fetch(fullURL)
-        .then(response => {
-          if (response.ok) {
-            console.log("✅ 익명 통계 전송 성공:", nameWithId);
-          } else {
-            console.error("❌ 익명 통계 전송 실패");
-          }
-        })
-        .catch(error => {
-          console.error("❌ 네트워크 오류", error);
-        });
-    }
 
 
   </script>
