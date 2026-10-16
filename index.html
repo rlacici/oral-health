@@ -196,26 +196,6 @@ img {
       document.getElementById("visitCountText").textContent =
         `지금까지 ${visitCount}번 태그했어요! 🎉`;
       setTimeout(() => checkBadgeAndShow(visitCount), 10);
-      recordChallengeTag();
-    }
-
-    function recordChallengeTag() {
-      const appsScriptUrl = "https://script.google.com/macros/s/AKfycbzUQCQP5co3iV3PCqtsu5gz6Zf4kc3DSdjiATTN2OsPRDSpfcXCC88vp6WDowO42ZRkgw/exec";
-      const callbackName = "hc_bg_" + Date.now();
-      let script;
-      window[callbackName] = function () {
-        delete window[callbackName];
-        if (script && script.parentNode) {
-          script.parentNode.removeChild(script);
-        }
-      };
-      script = document.createElement("script");
-      script.src = appsScriptUrl
-        + "?callback=" + callbackName
-        + "&imageId=" + encodeURIComponent("01")
-        + "&source=nfc"
-        + "&t=" + Date.now();
-      document.head.appendChild(script);
     }
 
     function checkBadgeAndShow(count) {
