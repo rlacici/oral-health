@@ -1,364 +1,605 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>랜덤 구강건강 메시지</title>
-  <link href="https://cdn.jsdelivr.net/npm/font-gmarket@1.0.1/style.css" rel="stylesheet">
-
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://rlacici.github.io" crossorigin>
+  <link rel="dns-prefetch" href="https://script.google.com">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#1A2B4A">
+  <title>2026 청소년 구강건강 챌린지</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
-    
-.ai-notice {
-  position: fixed;
-  bottom: 10px;    /* 화면 아래쪽 여백 */
-  left: 50%;       /* 가운데 정렬 기준점 */
-  transform: translateX(-50%); /* 가로 가운데 맞춤 */
-  font-size: 12px;
-  color: #555;     /* 글씨 색상 */
-  z-index: 9999;   /* 다른 요소보다 위 */
-}
+    :root {
+      --bg-top: #2D4A7A;
+      --bg-bottom: #1A2B4A;
+      --primary-dark: #2558CC;
+      --accent: #FFD166;
+      --text-muted: #A8B8D0;
+      --text-on-dark: #E8EEF8;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
 
-@media screen and (max-width: 768px) {
-  .ai-notice {
-    font-size: 10px; /* 모바일에서 조금 더 작게 */
-  }
-}
-
-
-    img.uniform {
-  max-width: 90%;
-  max-height: 450px;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  display: block;
-  margin:100px auto 0 auto;
-}
-
-    body {
-  font-family: 'Gmarket Sans', sans-serif;
-}
-
-    html, body {
+    * {
       margin: 0;
       padding: 0;
-      height: 100%;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100dvh;
       overflow: hidden;
-      background-color: #f9f9f9;
-      font-family: 'Arial', sans-serif;
+    }
+
+    body {
+      font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", sans-serif;
+      background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+      color: var(--text-on-dark);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app {
+      max-width: 430px;
+      margin: 0 auto;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+      padding:
+        max(4px, calc(2px + var(--safe-top)))
+        6px
+        max(4px, calc(2px + var(--safe-bottom)));
+    }
+
+    .header {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 0 4px 4px;
+      width: 100%;
+      flex-shrink: 0;
+    }
+
+    .header__title {
+      font-size: 0.55rem;
+      font-weight: 700;
+      color: var(--bg-bottom);
+      background: linear-gradient(135deg, var(--accent) 0%, #FFC233 100%);
+      padding: 2px 8px;
+      border-radius: 999px;
+      line-height: 1.3;
+      width: fit-content;
+      flex-shrink: 0;
       text-align: center;
-    }
-
-    h1 {
-      font-size: 18px;
-      margin: 0;
-      padding: 12px;
-      color: #004080;
-    }
-
-    .icon {
-      font-size: 24px;
-      margin-right: 6px;
-    }
-
-    .title-text {
-      color: #009ec1;
-      font-weight: bold;
-    }
-
-img {
-  width: 100%;
-  max-height: 80vh;
-  object-fit: contain;
-  border-radius: 12px;
-  margin-top: 50px;
-}
-
-    @keyframes blinkTwice {
-      0%, 100% { opacity: 1; }
-      20%, 60% { opacity: 0; }
-      40%, 80% { opacity: 1; }
-    }
-
-    #badgeMessage {
-      position: absolute;
-      top: 130px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #fff5d1;
-      border: 2px solid #ffc107;
-      padding: 10px 60px;
-      border-radius: 12px;
-      font-size: 20px;
-      font-weight: bold;
-      color: #333;
-      z-index: 1000;
-      box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
-      max-width: 90%;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+      letter-spacing: -0.03em;
+      word-break: keep-all;
       white-space: nowrap;
+    }
+
+    .header__center {
+      font-size: calc(0.62rem + 2pt);
+      font-weight: 500;
+      color: var(--text-on-dark);
+      line-height: 1.3;
+      text-align: center;
+      word-break: keep-all;
+      white-space: nowrap;
+      opacity: 0.95;
+    }
+
+    .header__brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 1;
+      min-width: 0;
+    }
+
+    .tag-line {
+      font-size: calc(1.12rem + 2pt);
+      font-weight: 400;
+      color: var(--text-muted);
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      text-align: center;
+      padding: 10px 18px;
+      margin: 2px 0 8px;
+      flex-shrink: 0;
+      width: fit-content;
+      max-width: calc(100% - 8px);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 999px;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      word-break: keep-all;
+    }
+
+    .tag-line strong {
+      font-weight: 700;
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .tag-line.is-blinking {
+      animation: tag-blink 1s ease-in-out infinite;
+    }
+
+    .tag-line.is-new-find {
+      font-size: calc(1.32rem + 1.5pt);
+      font-weight: 700;
+      color: var(--text-on-dark);
+      padding: 10px 18px;
+      line-height: 1.25;
+      word-break: keep-all;
+      z-index: 2;
+      transform-origin: center center;
+      animation: new-find-pop 5s ease-out, tag-blink 1s ease-in-out 5;
+    }
+
+    .tag-line.is-new-find.is-short {
+      animation: new-find-pop 3s ease-out, tag-blink 1s ease-in-out 3;
+    }
+
+    @keyframes tag-blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    @keyframes new-find-pop {
+      0% { transform: scale(1); }
+      16% { transform: scale(1.08); }
+      32% { transform: scale(1); }
+      100% { transform: scale(1); }
+    }
+
+    .image-stage {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .image-frame {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow:
+        0 10px 36px rgba(0, 0, 0, 0.32),
+        0 0 0 1px rgba(255, 255, 255, 0.06);
+    }
+
+    .image-stage__skeleton {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.04) 25%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0.04) 75%
+      );
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 14px;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .image-stage__img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .image-stage__img.is-loaded {
+      opacity: 1;
+    }
+
+    .image-stage__img.is-loaded + .image-stage__skeleton {
       display: none;
-      animation-iteration-count: 1;
     }
-    
-    .bigBadge {
-  font-size: 26px;
-  padding: 20px 80px;
-  border: 4px solid #ff9800;
-  background-color: #fff3e0;
-}
 
-
-  
-    .bigBadge {
-      font-size: 26px;
-      padding: 20px 80px;
-      border: 4px solid #ff9800;
-      background-color: #fff3e0;
+    .complete-overlay {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      top: 50%;
+      z-index: 4;
+      display: none;
+      border-radius: 16px;
+      background: rgba(16, 28, 48, 0.78);
+      color: var(--text-on-dark);
+      font-size: calc(1.42rem + 2pt);
+      font-weight: 700;
+      line-height: 1.35;
+      text-align: center;
+      word-break: keep-all;
+      padding: 22px 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
     }
-    </style>
 
-  
+    .complete-overlay__line {
+      display: block;
+      white-space: nowrap;
+    }
+
+    .complete-overlay.is-visible {
+      display: block;
+      animation: overlay-pop 5s ease-out, tag-blink 1s ease-in-out 5;
+    }
+
+    @keyframes overlay-pop {
+      0% { transform: translateY(-50%) scale(0.96); }
+      12% { transform: translateY(-50%) scale(1); }
+      100% { transform: translateY(-50%) scale(1); }
+    }
+
+    .ai-notice {
+      font-size: 8pt;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.2;
+      padding: 3px 4px 0;
+      flex-shrink: 0;
+      opacity: 0.6;
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
-  <h1>
-    <span class="icon">🦷</span>
-    <span class="title-text">[미추홀구보건소]구강건강 메시지</span>
-    <span class="icon">🦷</span>
-  </h1>
-  <p id="visitCountText" style="font-weight: bold; font-size: 18px; color: #555;"></p>
-  <script>
-  const count = localStorage.getItem("visitCount") || "0";
-  document.getElementById("visitCountText").textContent =
-    `지금까지 ${count}번 태그했어요! 🎉`;
+  <div class="app">
+    <header class="header">
+      <div class="header__title">2026 청소년 구강건강 챌린지</div>
+      <div class="header__brand">
+        <span class="header__center" id="center-name">🦷 미추홀구 보건소와 함께해요!</span>
+      </div>
+    </header>
 
-    function sendAnonymousStats(image) {
-      const fileId = image.url.split("/").pop().split(".")[0];
-      const nameWithId = `${image.name} [${fileId}]`;
-      const today = new Date().toISOString().split("T")[0]; // 날짜만 추출
-      const scriptURL = "https://script.google.com/macros/s/AKfycbwOKw7C1eYxnJQvi-2Z1I0xCX8tW2nQhJ74ORxAH8udsmS-uOf7bfJlTeHklSMv7RcEcA/exec";
-      const fullURL = `${scriptURL}?imageId=${encodeURIComponent(nameWithId)}&date=${encodeURIComponent(today)}`;
+    <p class="tag-line" id="tag-stats">
+      <span id="collection-status"></span>
+    </p>
 
-      fetch(fullURL)
-        .then(response => {
-          if (response.ok) {
-            console.log("✅ 익명 통계 전송 성공:", nameWithId);
-          } else {
-            console.error("❌ 익명 통계 전송 실패");
-          }
-        })
-        .catch(error => {
-          console.error("❌ 네트워크 오류", error);
-        });
-    }
-    
-    function showBadgeMessage(message, isBig = false) {
-  const badgeEl = document.getElementById("badgeMessage");
-  badgeEl.textContent = message;
-  badgeEl.style.display = "block";
-  badgeEl.style.animation = "blinkTwice 3s ease";
+    <div class="image-stage">
+      <div class="image-frame">
+        <img
+          class="image-stage__img"
+          id="hero-image"
+          src=""
+          alt="구강건강 챌린지 이미지"
+          decoding="async"
+          fetchpriority="high"
+        >
+        <div class="image-stage__skeleton" id="skeleton"></div>
+        <div class="complete-overlay" id="complete-overlay">
+          <span class="complete-overlay__line"><strong>20개</strong> 이미지 모두 발견!</span>
+          <span class="complete-overlay__line">좋아요 !👍</span>
+        </div>
+      </div>
+    </div>
 
-  // 크기 조정
-  if (isBig) {
-    badgeEl.classList.add("bigBadge");
-  } else {
-    badgeEl.classList.remove("bigBadge");
-  }
-
-  setTimeout(() => {
-    badgeEl.style.display = "none";
-    badgeEl.style.animation = "";
-  }, 3000);
-}
-
-// 방문 카운트 처리
-let count = parseInt(localStorage.getItem("visitCount") || "0") + 1;
-localStorage.setItem("visitCount", count);
-
-}
-
-  </script>
-
-
-  <div id="badgeMessage"></div>
-
-  <div id="imageContainer">
-    <p>이미지를 불러오는 중입니다...</p>
+    <p class="ai-notice">본 이미지는 AI를 활용하여 제작되었습니다</p>
   </div>
 
   <script>
-    
-    const images = [
-      { url: "https://i.imgur.com/9BExF6D.jpg", weight: 6, name: "치약만 있는 그림(1,450ppm)" },
-      { url: "https://i.imgur.com/kGL6Rm8.jpg", weight: 6, name: "혀내밀고 혀클리너로 세균닦아내기" },
-      { url: "https://i.imgur.com/LZ0CFlR.jpg", weight: 6, name: "고불소가 정답" },
-      { url: "https://i.imgur.com/U2phf8z.jpg", weight: 6, name: "칫솔 3개월 교체" },
-      { url: "https://i.imgur.com/CgytXI1.jpg", weight: 6, name: "치료보단 정기적인 구강검진" },
-      { url: "https://i.imgur.com/R8I8SVL.jpg", weight: 6, name: "잇몸에서 피가 나면 바로 치과에 가요" },
-      { url: "https://i.imgur.com/b5cfDqq.jpg", weight: 6, name: "달콤하게 즐기고 싶다면, 자일리톨" },
-      { url: "https://i.imgur.com/JXAb6J1.jpg", weight: 6, name: "잠자기 전 양치" },
-      { url: "https://i.imgur.com/7zaqDSV.jpg", weight: 6, name: "건강한 치아는 평생을 함께" },
-      { url: "https://i.imgur.com/ScqFB4I.jpg", weight: 6, name: "숨쉬는 것도 힙하게" },
-      { url: "https://i.imgur.com/dbQ3Kc3.jpg", weight: 6, name: "칫솔질의 마지막은 혀닦기" },
-      { url: "https://i.imgur.com/ZNAwF4x.jpg", weight: 6, name: "향기나는 내가좋다" },
-      { url: "https://i.imgur.com/l4cjFsZ.jpg", weight: 6, name: "양치, 귀찮은게 아니라 당연한거" },
-      { url: "https://i.imgur.com/W9WWHx6.jpg", weight: 6, name: "불소치약 찐템" },
-      { url: "https://i.imgur.com/uDk7raM.jpg", weight: 6, name: "양치스킵" },
-      { url: "https://i.imgur.com/8wSONpD.jpg", weight: 6, name: "치실 클린 업그레이드" },
-      { url: "https://i.imgur.com/6R47ZPA.jpg", weight: 6, name: "잇몸 출혈 시 신호 치과 GO" },
-      { url: "https://i.imgur.com/lAqSDUb.jpg", weight: 6, name: "물을 자주 마시기" },
-      { url: "https://i.imgur.com/39NLXvJ.jpg", weight: 6, name: "치실은 치아사이 청소기" },
-      { url: "https://i.imgur.com/SzJE3em.jpg", weight: 6, name: "숨쉴 때 티난다" },
-      { url: "https://i.imgur.com/NzhNN3l.jpg", weight: 6, name: "달콤한 간식은 이제그만" },
-      { url: "https://i.imgur.com/YZqBzYB.jpg", weight: 6, name: "거울보며 꼼곰하게" },
-      { url: "https://i.imgur.com/Y8EXRH4.jpg", weight: 6, name: "내 입속 건강지킴이" },
-      { url: "https://i.imgur.com/nqYIPcl.jpg", weight: 6, name: "세균파티" },
-      { url: "https://i.imgur.com/VD7OXyD.jpg", weight: 6, name: "양치는 타이밍" },
-       ];
+    const CONFIG = {
+      healthCenterName: "🦷 미추홀구 보건소와 함께해요!",
+      appsScriptUrl: "https://script.google.com/macros/s/AKfycbzUQCQP5co3iV3PCqtsu5gz6Zf4kc3DSdjiATTN2OsPRDSpfcXCC88vp6WDowO42ZRkgw/exec",
+      images: [
+        { id: "01", src: "images/01.jpg", weight: 2, alt: "그냥 다 귀찮음" },
+        { id: "02", src: "images/02c.jpg", weight: 2, alt: "충치는 연락 없이 옴" },
+        { id: "03", src: "images/03.jpg", weight: 2, alt: "칫솔은 아직 자는 중" },
+        { id: "04", src: "images/04.jpg", weight: 2, alt: "웃다가 점심시간 끝남" },
+        { id: "05", src: "images/05.jpg", weight: 2, alt: "나중에 할게요" },
+        { id: "06", src: "images/06.jpg", weight: 2, alt: "점심시간 통장" },
+        { id: "07", src: "images/07.jpg", weight: 2, alt: "오늘만 안 해야지" },
+        { id: "08", src: "images/08.jpg", weight: 2, alt: "하고 싶은 거 하는 시간" },
+        { id: "09", src: "images/09.jpg", weight: 2, alt: "오늘의 치아 날씨" },
+        { id: "10", src: "images/10.jpg", weight: 2, alt: "아무 것도 안 해도 재밌음" },
+        { id: "11", src: "images/11b.jpg", weight: 2, alt: "세면대까지 30초" },
+        { id: "12", src: "images/12.jpg", weight: 2, alt: "건강 점검 결과" },
+        { id: "13", src: "images/13.jpg", weight: 2, alt: "놀거리는 많음" },
+        { id: "14", src: "images/14b.jpg", weight: 2, alt: "원래 하는 거라서" },
+        { id: "15", src: "images/15c.jpg", weight: 2, alt: "칫솔 못 찾겠다" },
+        { id: "16", src: "images/16.jpg", weight: 2, alt: "아플 땐 양치 생각남" },
+        { id: "17", src: "images/17.jpg", weight: 2, alt: "자연스럽게 다음 순서" },
+        { id: "18", src: "images/18b.jpg", weight: 2, alt: "하다 보니 함" },
+        { id: "19", src: "images/19b.jpg", weight: 1, alt: "10명 중 2명" },
+        { id: "20", src: "images/20.jpg", weight: 1, minCount: 21, alt: "인천 전국 16위" }
+      ]
+    };
 
+    const STORAGE_KEY = "health_challenge_tag_count";
+    const SEEN_STORAGE_KEY = "health_challenge_seen_ids";
+    const COLLECTION_TOTAL = 20;
 
-    function weightedRandom(images) {
-  const totalWeight = images.reduce((sum, img) => sum + img.weight, 0);
-  const rand = Math.random() * totalWeight;
-  let cumulative = 0;
-  for (const img of images) {
-    cumulative += img.weight;
-    if (rand < cumulative) return img;
-  }
-}
-
-
-    function getUserUUID() {
-      let uuid = localStorage.getItem("userUUID");
-      if (!uuid) {
-        uuid = crypto.randomUUID();
-        localStorage.setItem("userUUID", uuid);
+    function normalizeId(id) {
+      const text = String(id).trim();
+      if (/^\d+$/.test(text) && text.length < 2) {
+        return text.padStart(2, "0");
       }
-      return uuid;
+      return text;
     }
 
-    function sendVisitLog(image) {
-      const uuid = getUserUUID();
-      const fileId = image.url.split("/").pop().split(".")[0];
-      const nameWithId = `${image.name} [${fileId}]`;
-      const scriptURL = "https://script.google.com/macros/s/AKfycby9yb7Bm-9nLfEpPpDDD-kF8CnU0Mtkw4ehxEdRn4mHKJ_wzrvf1ws8lkMzj8RTG_Ly_Q/exec";
-      const fullURL = `${scriptURL}?uuid=${encodeURIComponent(uuid)}&imageId=${encodeURIComponent(nameWithId)}`;
-
-      fetch(fullURL)
-        .then(() => {
-          let count = parseInt(localStorage.getItem("visitCount") || "0") + 1;
-          localStorage.setItem("visitCount", count);
-        document.getElementById("visitCountText").textContent =
-  `지금까지 ${count}번 태그했어요! 🎉`;
-          setTimeout(() => checkBadgeAndShow(count), 10);
-        });
+    function getBasePath() {
+      let path = window.location.pathname;
+      if (path.endsWith("/")) return path;
+      if (/\.html?$/i.test(path)) {
+        return path.slice(0, path.lastIndexOf("/") + 1);
+      }
+      return path + "/";
     }
 
-    function checkBadgeAndShow(count) {
-      let message = "";
-      if (count === 1) message = "👣 첫걸음 뱃지! 시작이 반이에요!";
-      else if (count === 3) message = "🔄 습관 루틴 뱃지 획득!";
-      else if (count === 5) message = "🪥 양치 마스터 입문!";
-      else if (count === 7) message = "🛡️ 충치 방어력 +1!";
-      else if (count === 10) message = "🎉 10회 태그 뱃지 획득!";
-      else if (count === 12) message = "💪 건강 습관 꾸준히!";
-      else if (count === 15) message = "🧠 지식 쑥쑥 뱃지!";
-      else if (count === 17) message = "🎨 구강건강 정복 중!";
-      else if (count === 20) message = "🏆 20회 이상! 구강건강 챔피언!";
-      else if (count === 22) message = "🧼 치아 미남미녀 등극!";
-      else if (count === 25) message = "💎 25회 태그달성! 구강 마스터!";
-      else if (count === 27) message = "🧚 깨끗요정 강림";
-      else if (count === 30) message = "🌟 30회 돌파! 계속해서 태그해보자!";
-      else if (count === 33) message = "🧬 세균을 물리치는 자!";
-      else if (count === 35) message = "🦸 구강지킴이 히어로!";
-      else if (count === 40) message = "😎 40번이나 태그했어요!";
-      else if (count === 45) message = "📚 구강건강 지식왕 등극!";
-      else if (count === 50) message = "🎯 지금까지 몇개의 이미지를 보았나요?";
-      else if (count === 55) message = "🪄 너의 건강 루틴 완성!";
-      else if (count === 60) message = "🏅 충치사냥꾼 뱃지!";
-      else if (count === 65) message = "🌱 작은 습관이 큰 변화를 만들어요!";
-      else if (count === 70) message = "🚿 입냄새 걱정 끝~ 뱃지!";
-      else if (count === 80) message = "📈 건강 그래프가 올라가요!";
-      else if (count === 85) message = "🛁 입속 청소왕 등극!";
-      else if (count === 90) message = "📅 매일의 실천, 나를 바꿔요!";
-      else if (count === 95) message = "🪞 거울 속 당신, 더 반짝여요!";
-      else if (count === 100) message = "🧙 구강 마법사 등극!";
-      else if (count === 110) message = "🌌 궁극의 치아 우주지배자!";  
-      else if (count === 120) message = "🦷 궁극의 치아 수호자!";  
-  
-      if (message) showBadgeMessage(message);
+    function resolveImageSrc(relativePath) {
+      return getBasePath() + relativePath.replace(/^\//, "");
     }
 
-    function showBadgeMessage(message) {
-      const badgeEl = document.getElementById("badgeMessage");
-      badgeEl.textContent = message;
-      badgeEl.style.display = "block";
-      badgeEl.style.animation = "blinkTwice 4s ease";
-      setTimeout(() => {
-        badgeEl.style.display = "none";
-        badgeEl.style.animation = "";
-      }, 5000);
+    function getAvailableImages(count) {
+      const unlocked = CONFIG.images.filter(function (image) {
+        return count >= (image.minCount || 1);
+      });
+      return unlocked.length ? unlocked : CONFIG.images.filter(function (image) {
+        return !image.minCount;
+      });
     }
 
-    const selectedImage = weightedRandom(images);
-    // 퀴즈 이미지는 익명 통계에 기록하지 않음
-if (selectedImage.name !== "퀴즈 참여 유도") {
-sendAnonymousStats(selectedImage);
-}
+    function pickWeightedImage(images) {
+      const total = images.reduce((sum, img) => sum + img.weight, 0);
+      let random = Math.random() * total;
 
-    
-    const container = document.getElementById("imageContainer");
-    container.innerHTML = `<img src="${selectedImage.url}" alt="구강건강 이미지" class="uniform">`;
+      for (const image of images) {
+        random -= image.weight;
+        if (random <= 0) return image;
+      }
 
-    sendVisitLog(selectedImage);
-      
-    function sendAnonymousStats(image) {
-      const fileId = image.url.split("/").pop().split(".")[0];
-      const nameWithId = `${image.name} [${fileId}]`;
-      const today = new Date().toISOString().split("T")[0]; // 날짜만 추출
-      const scriptURL = "https://script.google.com/macros/s/AKfycbyWgIsOr573dAJgePzSVBkrEA71jFPa8JqQu0Q1fJm8pP5gJhnEFIzJYISjOapav5Fz3A/exec";
-      const fullURL = `${scriptURL}?imageId=${encodeURIComponent(fileId)}&imageName=${encodeURIComponent(image.name)}`;
-      
-      fetch(fullURL)
-        .then(response => {
-          if (response.ok) {
-            console.log("✅ 익명 통계 전송 성공:", nameWithId);
-          } else {
-            console.error("❌ 익명 통계 전송 실패");
+      return images[images.length - 1];
+    }
+
+    function incrementPersonalCount() {
+      const count = Number(localStorage.getItem(STORAGE_KEY) || 0) + 1;
+      localStorage.setItem(STORAGE_KEY, String(count));
+      return count;
+    }
+
+    function loadSeenIds() {
+      try {
+        const raw = localStorage.getItem(SEEN_STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed.map(normalizeId) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveSeenIds(ids) {
+      localStorage.setItem(SEEN_STORAGE_KEY, JSON.stringify(ids));
+    }
+
+    function recordSeenImage(imageId) {
+      const id = normalizeId(imageId);
+      const seen = loadSeenIds();
+      const isNew = seen.indexOf(id) === -1;
+      if (isNew) {
+        seen.push(id);
+        saveSeenIds(seen);
+      }
+      return {
+        isNew: isNew,
+        found: seen.length
+      };
+    }
+
+    let collectionTimer = null;
+    let overlayTimer = null;
+
+    function setCollectionText(found, mode) {
+      const status = document.getElementById("collection-status");
+
+      if (mode === "new") {
+        status.innerHTML = "✨이미지 20개 중 <strong>" + found + "개</strong> 발견!✨";
+        return;
+      }
+      if (mode === "complete-new") {
+        status.textContent = "✨모든 이미지 발견!✨";
+        return;
+      }
+      if (mode === "keep-going") {
+        status.textContent = "랜덤은 계속된다! 쭈욱~~👀";
+        return;
+      }
+      if (mode === "wait") {
+        status.textContent = "다음 이미지는 뭘까?";
+        return;
+      }
+      status.innerHTML = "다시 만난 이미지! 현재 <strong>" + found + "개</strong> 발견 중!";
+    }
+
+    function hideCompleteOverlay() {
+      const overlay = document.getElementById("complete-overlay");
+      overlay.classList.remove("is-visible");
+    }
+
+    function showCompleteOverlay() {
+      const overlay = document.getElementById("complete-overlay");
+      if (overlayTimer) {
+        clearTimeout(overlayTimer);
+        overlayTimer = null;
+      }
+      overlay.classList.remove("is-visible");
+      void overlay.offsetWidth;
+      overlay.classList.add("is-visible");
+      overlayTimer = setTimeout(hideCompleteOverlay, 5000);
+    }
+
+    function renderCollection(found, isNew) {
+      const el = document.getElementById("tag-stats");
+      const complete = found >= COLLECTION_TOTAL;
+
+      if (collectionTimer) {
+        clearTimeout(collectionTimer);
+        collectionTimer = null;
+      }
+      if (overlayTimer) {
+        clearTimeout(overlayTimer);
+        overlayTimer = null;
+      }
+      hideCompleteOverlay();
+
+      el.classList.remove("is-blinking", "is-new-find", "is-short");
+      void el.offsetWidth;
+
+      if (isNew) {
+        setCollectionText(found, complete ? "complete-new" : "new");
+        el.classList.add("is-new-find");
+        if (complete) {
+          el.classList.add("is-short");
+          showCompleteOverlay();
+        }
+        collectionTimer = setTimeout(function () {
+          el.classList.remove("is-new-find", "is-short");
+          setCollectionText(found, complete ? "keep-going" : "wait");
+          el.classList.add("is-blinking");
+        }, complete ? 3000 : 5000);
+        return;
+      }
+
+      setCollectionText(found, complete ? "keep-going" : "repeat");
+      el.classList.add("is-blinking");
+    }
+
+    function showImage(image) {
+      const img = document.getElementById("hero-image");
+      const skeleton = document.getElementById("skeleton");
+      const baseUrl = resolveImageSrc(image.src);
+      let attempt = 0;
+      const maxAttempts = 2;
+
+      img.classList.remove("is-loaded");
+      skeleton.style.display = "";
+      img.alt = image.alt;
+
+      function loadImage() {
+        const url = attempt === 0
+          ? baseUrl
+          : baseUrl + (baseUrl.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+        img.onload = function () {
+          img.classList.add("is-loaded");
+        };
+        img.onerror = function () {
+          attempt++;
+          if (attempt < maxAttempts) {
+            setTimeout(loadImage, 200);
+            return;
           }
-        })
-        .catch(error => {
-          console.error("❌ 네트워크 오류", error);
-        });
-    }
-
-
-  </script>
-
-  <div id="badgeMessage"></div>
-  <script>
-    function showBadgeMessage(message, isBig = false) {
-      const badgeEl = document.getElementById("badgeMessage");
-      badgeEl.textContent = message;
-      badgeEl.style.display = "block";
-      badgeEl.style.animation = "blinkTwice 3s ease";
-
-      if (isBig) {
-        badgeEl.classList.add("bigBadge");
-      } else {
-        badgeEl.classList.remove("bigBadge");
+          img.classList.add("is-loaded");
+          skeleton.style.display = "none";
+          img.alt = "이미지를 불러올 수 없습니다. 잠시 후 다시 태그해 주세요.";
+        };
+        img.src = url;
       }
 
-      setTimeout(() => {
-        badgeEl.style.display = "none";
-        badgeEl.style.animation = "";
-      }, 3000);
+      loadImage();
     }
 
+    function renderPage(data) {
+      const centerName = data.healthCenterName || CONFIG.healthCenterName;
+      document.getElementById("center-name").textContent = centerName;
+      renderCollection(data.found, data.isNew);
+      showImage(data.image);
+    }
 
+    function getTagSource() {
+      const path = window.location.pathname || "";
+      return path.indexOf("oral-health") !== -1 ? "nfc" : "web";
+    }
+
+    function recordTagInBackground(imageId) {
+      if (!CONFIG.appsScriptUrl) return;
+
+      const callbackName = "hc_bg_" + Date.now();
+      let script;
+
+      window[callbackName] = function () {
+        delete window[callbackName];
+        if (script && script.parentNode) {
+          script.parentNode.removeChild(script);
+        }
+      };
+
+      script = document.createElement("script");
+      script.src = CONFIG.appsScriptUrl
+        + "?callback=" + callbackName
+        + "&imageId=" + encodeURIComponent(normalizeId(imageId))
+        + "&source=" + encodeURIComponent(getTagSource())
+        + "&t=" + Date.now();
+      script.onerror = function () {
+        delete window[callbackName];
+        if (script && script.parentNode) {
+          script.parentNode.removeChild(script);
+        }
+      };
+      document.head.appendChild(script);
+    }
+
+    function registerServiceWorker() {
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function (regs) {
+          regs.forEach(function (reg) {
+            reg.unregister();
+          });
+        }).catch(function () {});
+      }
+      if (window.caches) {
+        caches.keys().then(function (keys) {
+          keys.forEach(function (key) {
+            caches.delete(key);
+          });
+        }).catch(function () {});
+      }
+    }
+
+    function init() {
+      registerServiceWorker();
+      document.getElementById("center-name").textContent = CONFIG.healthCenterName;
+
+      const count = incrementPersonalCount();
+      const image = pickWeightedImage(getAvailableImages(count));
+      const collection = recordSeenImage(image.id);
+
+      renderPage({
+        count: count,
+        image: image,
+        found: collection.found,
+        isNew: collection.isNew,
+        healthCenterName: CONFIG.healthCenterName
+      });
+
+      if (CONFIG.appsScriptUrl) {
+        recordTagInBackground(image.id);
+      }
+    }
+
+    init();
   </script>
-
-<div class="ai-notice">본 이미지는 AI를 활용하여 제작되었습니다.</div>
-
 </body>
-
 </html>
