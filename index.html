@@ -1,282 +1,959 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>랜덤 구강건강 메시지</title>
-  <link href="https://cdn.jsdelivr.net/npm/font-gmarket@1.0.1/style.css" rel="stylesheet">
-
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://rlacici.github.io" crossorigin>
+  <link rel="dns-prefetch" href="https://script.google.com">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#1A2B4A">
+  <title>2026 청소년 구강건강 챌린지</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
-    
-.ai-notice {
-  position: fixed;
-  bottom: 10px;    /* 화면 아래쪽 여백 */
-  left: 50%;       /* 가운데 정렬 기준점 */
-  transform: translateX(-50%); /* 가로 가운데 맞춤 */
-  font-size: 12px;
-  color: #555;     /* 글씨 색상 */
-  z-index: 9999;   /* 다른 요소보다 위 */
-}
+    :root {
+      --bg-top: #2D4A7A;
+      --bg-bottom: #1A2B4A;
+      --primary-dark: #2558CC;
+      --accent: #FFD166;
+      --ink: #1A2B4A;
+      --text-muted: #A8B8D0;
+      --text-on-dark: #E8EEF8;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
 
-@media screen and (max-width: 768px) {
-  .ai-notice {
-    font-size: 10px; /* 모바일에서 조금 더 작게 */
-  }
-}
-
-
-    img.uniform {
-  max-width: 90%;
-  max-height: 450px;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  display: block;
-  margin:100px auto 0 auto;
-}
-
-    body {
-  font-family: 'Gmarket Sans', sans-serif;
-}
-
-    html, body {
+    * {
       margin: 0;
       padding: 0;
-      height: 100%;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100dvh;
       overflow: hidden;
-      background-color: #f9f9f9;
-      font-family: 'Arial', sans-serif;
+    }
+
+    body {
+      font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", sans-serif;
+      background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+      color: var(--text-on-dark);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app {
+      max-width: 430px;
+      margin: 0 auto;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+      padding:
+        max(4px, calc(2px + var(--safe-top)))
+        6px
+        max(4px, calc(2px + var(--safe-bottom)));
+    }
+
+    .header {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 0 4px 4px;
+      width: 100%;
+      flex-shrink: 0;
+    }
+
+    .header__title {
+      font-size: 0.55rem;
+      font-weight: 700;
+      color: var(--bg-bottom);
+      background: linear-gradient(135deg, var(--accent) 0%, #FFC233 100%);
+      padding: 2px 8px;
+      border-radius: 999px;
+      line-height: 1.3;
+      width: fit-content;
+      flex-shrink: 0;
       text-align: center;
-    }
-
-    h1 {
-      font-size: 18px;
-      margin: 0;
-      padding: 12px;
-      color: #004080;
-    }
-
-    .icon {
-      font-size: 24px;
-      margin-right: 6px;
-    }
-
-    .title-text {
-      color: #009ec1;
-      font-weight: bold;
-    }
-
-img {
-  width: 100%;
-  max-height: 80vh;
-  object-fit: contain;
-  border-radius: 12px;
-  margin-top: 50px;
-}
-
-    @keyframes blinkTwice {
-      0%, 100% { opacity: 1; }
-      20%, 60% { opacity: 0; }
-      40%, 80% { opacity: 1; }
-    }
-
-    #badgeMessage {
-      position: absolute;
-      top: 130px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #fff5d1;
-      border: 2px solid #ffc107;
-      padding: 10px 60px;
-      border-radius: 12px;
-      font-size: 20px;
-      font-weight: bold;
-      color: #333;
-      z-index: 1000;
-      box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
-      max-width: 90%;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+      letter-spacing: -0.03em;
+      word-break: keep-all;
       white-space: nowrap;
+    }
+
+    .header__center {
+      font-size: calc(0.62rem + 2pt);
+      font-weight: 500;
+      color: var(--text-on-dark);
+      line-height: 1.3;
+      text-align: center;
+      word-break: keep-all;
+      white-space: nowrap;
+      opacity: 0.95;
+    }
+
+    .header__brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 1;
+      min-width: 0;
+    }
+
+    .tag-line {
+      font-size: calc(1.12rem + 2pt);
+      font-weight: 400;
+      color: var(--text-muted);
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      text-align: center;
+      padding: 10px 18px;
+      margin: 2px 0 8px;
+      flex-shrink: 0;
+      width: fit-content;
+      max-width: calc(100% - 8px);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 999px;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      word-break: keep-all;
+    }
+
+    .tag-line strong {
+      font-weight: 700;
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .tag-line.is-blinking {
+      animation: tag-blink 1s ease-in-out infinite;
+    }
+
+    .tag-line.is-new-find {
+      font-size: calc(1.32rem + 1.5pt);
+      font-weight: 700;
+      color: var(--text-on-dark);
+      padding: 10px 18px;
+      line-height: 1.25;
+      word-break: keep-all;
+      z-index: 2;
+      transform-origin: center center;
+      animation: new-find-pop 5s ease-out, tag-blink 1s ease-in-out 5;
+    }
+
+    .tag-line.is-new-find.is-short {
+      animation: new-find-pop 5s ease-out, tag-blink 1s ease-in-out 5;
+    }
+
+    .tag-line.is-quote {
+      width: calc(100% - 8px);
+      max-width: calc(100% - 8px);
+      padding: 8px 16px;
+      height: calc(16px + 2.5em);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tag-line.is-quote #collection-status {
+      display: block;
+      width: 100%;
+      line-height: 1.25;
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+
+    .tag-line .eojeol {
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .tag-line .quote-line {
+      display: block;
+      white-space: nowrap;
+    }
+
+    @keyframes tag-blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    @keyframes new-find-pop {
+      0% { transform: scale(1); }
+      16% { transform: scale(1.08); }
+      32% { transform: scale(1); }
+      100% { transform: scale(1); }
+    }
+
+    .image-stage {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .image-frame {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow:
+        0 10px 36px rgba(0, 0, 0, 0.32),
+        0 0 0 1px rgba(255, 255, 255, 0.06);
+    }
+
+    .image-stage__skeleton {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.04) 25%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0.04) 75%
+      );
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 14px;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .image-stage__img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .image-stage__img.is-loaded {
+      opacity: 1;
+    }
+
+    .image-stage__img.is-loaded + .image-stage__skeleton {
       display: none;
-      animation-iteration-count: 1;
     }
-    
-    .bigBadge {
-  font-size: 26px;
-  padding: 20px 80px;
-  border: 4px solid #ff9800;
-  background-color: #fff3e0;
-}
 
-
-  
-    .bigBadge {
-      font-size: 26px;
-      padding: 20px 80px;
-      border: 4px solid #ff9800;
-      background-color: #fff3e0;
+    .complete-overlay {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      top: 50%;
+      z-index: 4;
+      display: none;
+      border-radius: 24px;
+      background: linear-gradient(180deg, #fffdf8 0%, #fff4d8 100%);
+      color: var(--ink);
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.45;
+      text-align: center;
+      word-break: keep-all;
+      padding: 22px 16px 18px;
+      transform: translateY(-50%);
+      pointer-events: auto;
+      box-shadow: 0 16px 36px rgba(26, 43, 74, 0.22);
+      border: 1px solid rgba(255, 209, 102, 0.95);
     }
-    </style>
 
-  
+    .complete-overlay__line {
+      display: block;
+      white-space: nowrap;
+      margin: 0 0 8px;
+    }
+
+    .complete-overlay__line--gap {
+      margin-top: 1.15em;
+    }
+
+    .complete-overlay__line--big {
+      font-size: 1.5em;
+      font-weight: 600;
+      line-height: 1.5;
+      margin-top: 2px;
+    }
+
+    .complete-overlay__line--hot {
+      color: #E10600;
+      font-weight: 700;
+    }
+
+    .complete-overlay__actions {
+      display: flex;
+      align-items: stretch;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .complete-overlay__gift,
+    .complete-overlay__continue {
+      flex: 1 1 0;
+      min-width: 0;
+      min-height: 46px;
+      margin: 0;
+      padding: 10px 8px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: inherit;
+      line-height: 1.25;
+      letter-spacing: -0.03em;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .complete-overlay__gift {
+      border: 0;
+      background: var(--accent);
+      color: var(--ink);
+      box-shadow: 0 6px 16px rgba(180, 130, 20, 0.28);
+      animation: gift-pulse 1.2s ease-in-out infinite;
+    }
+
+    .complete-overlay__continue {
+      background: #fff;
+      color: var(--ink);
+      border: 1.5px solid #1A2B4A;
+      box-shadow: none;
+    }
+
+    @keyframes gift-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.07); }
+    }
+
+    .complete-overlay__gift.is-used {
+      animation: none;
+      background: #c5cdd8;
+      color: #4a5568;
+      box-shadow: none;
+      cursor: default;
+    }
+
+    .complete-overlay.is-visible {
+      display: block;
+      animation: overlay-pop 0.45s ease-out;
+    }
+
+    @keyframes overlay-pop {
+      0% { transform: translateY(-50%) scale(0.96); }
+      12% { transform: translateY(-50%) scale(1); }
+      100% { transform: translateY(-50%) scale(1); }
+    }
+
+    .ai-notice {
+      font-size: 8pt;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.2;
+      padding: 3px 4px 0;
+      flex-shrink: 0;
+      opacity: 0.6;
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
-  <h1>
-    <span class="icon">🦷</span>
-    <span class="title-text">[미추홀구보건소]구강건강 메시지</span>
-    <span class="icon">🦷</span>
-  </h1>
-  <p id="visitCountText" style="font-weight: bold; font-size: 18px; color: #555;"></p>
-  <script>
-    const shownCount = localStorage.getItem("visitCount") || "0";
-    document.getElementById("visitCountText").textContent =
-      "지금까지 " + shownCount + "번 태그했어요! 🎉";
-  </script>
+  <div class="app">
+    <header class="header">
+      <div class="header__title">2026 청소년 구강건강 챌린지</div>
+      <div class="header__brand">
+        <span class="header__center" id="center-name">🦷 미추홀구 보건소와 함께해요!</span>
+      </div>
+    </header>
 
+    <p class="tag-line" id="tag-stats">
+      <span id="collection-status"></span>
+    </p>
 
-  <div id="badgeMessage"></div>
+    <div class="image-stage">
+      <div class="image-frame">
+        <img
+          class="image-stage__img"
+          id="hero-image"
+          src=""
+          alt="구강건강 챌린지 이미지"
+          decoding="async"
+          fetchpriority="high"
+        >
+        <div class="image-stage__skeleton" id="skeleton"></div>
+        <div class="complete-overlay" id="complete-overlay">
+          <span class="complete-overlay__line complete-overlay__line--big">😉 여기서 끝인 줄 알았죠?</span>
+          <span class="complete-overlay__line complete-overlay__line--big complete-overlay__line--hot">키링은 앞으로도 계속 태그해 보세요.</span>
+          <span class="complete-overlay__line complete-overlay__line--big complete-overlay__line--hot">이미지와 함께<br>매번 랜덤 한마디가 나타나요!</span>
+          <span class="complete-overlay__line complete-overlay__line--big complete-overlay__line--gap">그리고 또 하나!<br>🎁 이미지를 다 찾았다면<br>특별한 도전이 기다려요!</span>
+          <div class="complete-overlay__actions">
+            <button type="button" class="complete-overlay__gift" id="gift-open-btn">🎁 도전 시작하기</button>
+            <button type="button" class="complete-overlay__continue" id="gift-continue-btn">태그 계속하기</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <div id="imageContainer">
-    <p>이미지를 불러오는 중입니다...</p>
+    <p class="ai-notice">본 이미지는 AI를 활용하여 제작되었습니다</p>
   </div>
 
   <script>
-    
-    const images = [
-      { url: "https://i.imgur.com/9BExF6D.jpg", weight: 6, name: "치약만 있는 그림(1,450ppm)" },
-      { url: "https://i.imgur.com/kGL6Rm8.jpg", weight: 6, name: "혀내밀고 혀클리너로 세균닦아내기" },
-      { url: "https://i.imgur.com/LZ0CFlR.jpg", weight: 6, name: "고불소가 정답" },
-      { url: "https://i.imgur.com/U2phf8z.jpg", weight: 6, name: "칫솔 3개월 교체" },
-      { url: "https://i.imgur.com/CgytXI1.jpg", weight: 6, name: "치료보단 정기적인 구강검진" },
-      { url: "https://i.imgur.com/R8I8SVL.jpg", weight: 6, name: "잇몸에서 피가 나면 바로 치과에 가요" },
-      { url: "https://i.imgur.com/b5cfDqq.jpg", weight: 6, name: "달콤하게 즐기고 싶다면, 자일리톨" },
-      { url: "https://i.imgur.com/JXAb6J1.jpg", weight: 6, name: "잠자기 전 양치" },
-      { url: "https://i.imgur.com/7zaqDSV.jpg", weight: 6, name: "건강한 치아는 평생을 함께" },
-      { url: "https://i.imgur.com/ScqFB4I.jpg", weight: 6, name: "숨쉬는 것도 힙하게" },
-      { url: "https://i.imgur.com/dbQ3Kc3.jpg", weight: 6, name: "칫솔질의 마지막은 혀닦기" },
-      { url: "https://i.imgur.com/ZNAwF4x.jpg", weight: 6, name: "향기나는 내가좋다" },
-      { url: "https://i.imgur.com/l4cjFsZ.jpg", weight: 6, name: "양치, 귀찮은게 아니라 당연한거" },
-      { url: "https://i.imgur.com/W9WWHx6.jpg", weight: 6, name: "불소치약 찐템" },
-      { url: "https://i.imgur.com/uDk7raM.jpg", weight: 6, name: "양치스킵" },
-      { url: "https://i.imgur.com/8wSONpD.jpg", weight: 6, name: "치실 클린 업그레이드" },
-      { url: "https://i.imgur.com/6R47ZPA.jpg", weight: 6, name: "잇몸 출혈 시 신호 치과 GO" },
-      { url: "https://i.imgur.com/lAqSDUb.jpg", weight: 6, name: "물을 자주 마시기" },
-      { url: "https://i.imgur.com/39NLXvJ.jpg", weight: 6, name: "치실은 치아사이 청소기" },
-      { url: "https://i.imgur.com/SzJE3em.jpg", weight: 6, name: "숨쉴 때 티난다" },
-      { url: "https://i.imgur.com/NzhNN3l.jpg", weight: 6, name: "달콤한 간식은 이제그만" },
-      { url: "https://i.imgur.com/YZqBzYB.jpg", weight: 6, name: "거울보며 꼼곰하게" },
-      { url: "https://i.imgur.com/Y8EXRH4.jpg", weight: 6, name: "내 입속 건강지킴이" },
-      { url: "https://i.imgur.com/nqYIPcl.jpg", weight: 6, name: "세균파티" },
-      { url: "https://i.imgur.com/VD7OXyD.jpg", weight: 6, name: "양치는 타이밍" },
-       ];
+    const CONFIG = {
+      healthCenterName: "🦷 미추홀구 보건소와 함께해요!",
+      appsScriptUrl: "https://script.google.com/macros/s/AKfycbzUQCQP5co3iV3PCqtsu5gz6Zf4kc3DSdjiATTN2OsPRDSpfcXCC88vp6WDowO42ZRkgw/exec",
+      giftGameUrl: "https://rlacici.github.io/tap-tap-30s/?from=keyring",
+      images: [
+        { id: "01", src: "images/01.jpg", weight: 2, alt: "그냥 다 귀찮음" },
+        { id: "02", src: "images/02c.jpg", weight: 2, alt: "충치는 연락 없이 옴" },
+        { id: "03", src: "images/03.jpg", weight: 2, alt: "칫솔은 아직 자는 중" },
+        { id: "04", src: "images/04.jpg", weight: 2, alt: "웃다가 점심시간 끝남" },
+        { id: "05", src: "images/05.jpg", weight: 2, alt: "나중에 할게요" },
+        { id: "06", src: "images/06.jpg", weight: 2, alt: "점심시간 통장" },
+        { id: "07", src: "images/07.jpg", weight: 2, alt: "오늘만 안 해야지" },
+        { id: "08", src: "images/08.jpg", weight: 2, alt: "하고 싶은 거 하는 시간" },
+        { id: "09", src: "images/09.jpg", weight: 2, alt: "오늘의 치아 날씨" },
+        { id: "10", src: "images/10.jpg", weight: 2, alt: "아무 것도 안 해도 재밌음" },
+        { id: "11", src: "images/11b.jpg", weight: 2, alt: "세면대까지 30초" },
+        { id: "12", src: "images/12.jpg", weight: 2, alt: "건강 점검 결과" },
+        { id: "13", src: "images/13.jpg", weight: 2, alt: "놀거리는 많음" },
+        { id: "14", src: "images/14b.jpg", weight: 2, alt: "원래 하는 거라서" },
+        { id: "15", src: "images/15c.jpg", weight: 2, alt: "칫솔 못 찾겠다" },
+        { id: "16", src: "images/16.jpg", weight: 2, alt: "아플 땐 양치 생각남" },
+        { id: "17", src: "images/17.jpg", weight: 2, alt: "자연스럽게 다음 순서" },
+        { id: "18", src: "images/18b.jpg", weight: 2, alt: "하다 보니 함" },
+        { id: "19", src: "images/19b.jpg", weight: 1, alt: "10명 중 2명" },
+        { id: "20", src: "images/20.jpg", weight: 1, minCount: 21, alt: "인천 전국 16위" }
+      ]
+    };
 
+    const STORAGE_KEY = "health_challenge_tag_count";
+    const SEEN_STORAGE_KEY = "health_challenge_seen_ids";
+    const COLLECTION_TOTAL = 20;
+    const GIFT_MAX = 1;
+    const GIFT_OPENS_KEY = "hc-gift-opens";
+    const COMPLETE_PENDING_KEY = "hc-complete-pending";
 
-    function weightedRandom(images) {
-  const totalWeight = images.reduce((sum, img) => sum + img.weight, 0);
-  const rand = Math.random() * totalWeight;
-  let cumulative = 0;
-  for (const img of images) {
-    cumulative += img.weight;
-    if (rand < cumulative) return img;
-  }
-}
+    function isCompletePending() {
+      return localStorage.getItem(COMPLETE_PENDING_KEY) === "1";
+    }
 
+    function setCompletePending() {
+      localStorage.setItem(COMPLETE_PENDING_KEY, "1");
+    }
 
-    function getUserUUID() {
-      let uuid = localStorage.getItem("userUUID");
-      if (!uuid) {
-        uuid = crypto.randomUUID();
-        localStorage.setItem("userUUID", uuid);
+    function clearCompletePending() {
+      localStorage.removeItem(COMPLETE_PENDING_KEY);
+    }
+    const KEEP_GOING_LAST_KEY = "hc-keep-going-last";
+    const KEEP_GOING_QUOTES = [
+      "폰은 하루에도 몇 번씩 보면서 칫솔은요?",
+      "양치질은 3분도 긴데, 쇼츠 3분은 순삭?",
+      "치아는 매일 일하는데\n쉬는 시간도 없대요.",
+      "점심시간에 양치질할 시간 없었다고요? 진짜?",
+      "양치질은 내일부터?\n그 내일이 오늘인데요.",
+      "게임 출석은 안 까먹는데\n양치질은 깜빡?",
+      "내일 할 일은 미뤄도 충치는\n안 미뤄져요.",
+      "치아는 교체 버튼이 없다는 게\n좀 아쉽죠?",
+      "칫솔은 오늘도 기다리고 있습니다.",
+      "양치질 안 한 날, 충치균은 회식 중.",
+      "이 문구 읽는 동안\n칫솔질 생각 한 번은 했죠?",
+      "충치균은 당신의 ‘이따가’를 좋아합니다.",
+      "충치균에게 오늘도\n자유시간을 주셨나요?",
+      "양치질 선택은 했는데\n실행 버튼을 안 누른 거죠?",
+      "이거 읽고도 양치질 미룰\n거제~ 야호~~~!",
+      "칫솔 잡을 시간이 왔제~ 야호~~~!",
+      "양치질 안 해도 되는 이유 찾는 데\n더 진심인 편.",
+      "칫솔은 있는데 의지가 품절됐어요.",
+      "오늘은 진짜 하려고 했다는 말,\n어제도 했죠?",
+      "양치질은 선택적으로,\n간식은 적극적으로...?",
+      "칫솔이랑\n마지막으로 눈 마주친 게 언제예요?",
+      "칫솔이랑 어색해지기 전에\n먼저 말 걸어봐요",
+      "칫솔은 아직 손절할 생각 없대요.",
+      "칫솔이 요즘 혼자 있는 시간이 많대요.",
+      "양치질이 오늘도 약속 장소에서\n기다리고 있어요."
+    ];
+
+    function pickKeepGoingQuote() {
+      const last = Number(sessionStorage.getItem(KEEP_GOING_LAST_KEY));
+      const total = KEEP_GOING_QUOTES.length;
+      let idx = Math.floor(Math.random() * total);
+      if (total > 1 && Number.isFinite(last) && idx === last) {
+        idx = (idx + 1 + Math.floor(Math.random() * (total - 1))) % total;
       }
-      return uuid;
+      sessionStorage.setItem(KEEP_GOING_LAST_KEY, String(idx));
+      return KEEP_GOING_QUOTES[idx];
     }
 
-    function sendVisitLog(image) {
-      let visitCount = parseInt(localStorage.getItem("visitCount") || "0") + 1;
-      localStorage.setItem("visitCount", visitCount);
-      document.getElementById("visitCountText").textContent =
-        `지금까지 ${visitCount}번 태그했어요! 🎉`;
-      setTimeout(() => checkBadgeAndShow(visitCount), 10);
+    function escapeQuoteText(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/"/g, "&quot;");
     }
 
-    function checkBadgeAndShow(count) {
-      let message = "";
-      if (count === 1) message = "👣 첫걸음 뱃지! 시작이 반이에요!";
-      else if (count === 3) message = "🔄 습관 루틴 뱃지 획득!";
-      else if (count === 5) message = "🪥 양치 마스터 입문!";
-      else if (count === 7) message = "🛡️ 충치 방어력 +1!";
-      else if (count === 10) message = "🎉 10회 태그 뱃지 획득!";
-      else if (count === 12) message = "💪 건강 습관 꾸준히!";
-      else if (count === 15) message = "🧠 지식 쑥쑥 뱃지!";
-      else if (count === 17) message = "🎨 구강건강 정복 중!";
-      else if (count === 20) message = "🏆 20회 이상! 구강건강 챔피언!";
-      else if (count === 22) message = "🧼 치아 미남미녀 등극!";
-      else if (count === 25) message = "💎 25회 태그달성! 구강 마스터!";
-      else if (count === 27) message = "🧚 깨끗요정 강림";
-      else if (count === 30) message = "🌟 30회 돌파! 계속해서 태그해보자!";
-      else if (count === 33) message = "🧬 세균을 물리치는 자!";
-      else if (count === 35) message = "🦸 구강지킴이 히어로!";
-      else if (count === 40) message = "😎 40번이나 태그했어요!";
-      else if (count === 45) message = "📚 구강건강 지식왕 등극!";
-      else if (count === 50) message = "🎯 지금까지 몇개의 이미지를 보았나요?";
-      else if (count === 55) message = "🪄 너의 건강 루틴 완성!";
-      else if (count === 60) message = "🏅 충치사냥꾼 뱃지!";
-      else if (count === 65) message = "🌱 작은 습관이 큰 변화를 만들어요!";
-      else if (count === 70) message = "🚿 입냄새 걱정 끝~ 뱃지!";
-      else if (count === 80) message = "📈 건강 그래프가 올라가요!";
-      else if (count === 85) message = "🛁 입속 청소왕 등극!";
-      else if (count === 90) message = "📅 매일의 실천, 나를 바꿔요!";
-      else if (count === 95) message = "🪞 거울 속 당신, 더 반짝여요!";
-      else if (count === 100) message = "🧙 구강 마법사 등극!";
-      else if (count === 110) message = "🌌 궁극의 치아 우주지배자!";  
-      else if (count === 120) message = "🦷 궁극의 치아 수호자!";  
-  
-      if (message) showBadgeMessage(message);
+    function quoteToEojeolHtml(text) {
+      const lines = String(text).split("\n");
+      if (lines.length > 1) {
+        return lines.map(function (line) {
+          return "<span class=\"quote-line\">" + escapeQuoteText(line) + "</span>";
+        }).join("");
+      }
+      return lines[0].split(/\s+/).map(function (part) {
+        return "<span class=\"eojeol\">" + escapeQuoteText(part) + "</span>";
+      }).join(" ");
     }
 
-    function showBadgeMessage(message) {
-      const badgeEl = document.getElementById("badgeMessage");
-      badgeEl.textContent = message;
-      badgeEl.style.display = "block";
-      badgeEl.style.animation = "blinkTwice 4s ease";
-      setTimeout(() => {
-        badgeEl.style.display = "none";
-        badgeEl.style.animation = "";
-      }, 5000);
+    function fitKeepGoingQuote() {
+      const box = document.getElementById("tag-stats");
+      const status = document.getElementById("collection-status");
+      if (!box.classList.contains("is-quote")) return;
+      const style = getComputedStyle(box);
+      const padX = (parseFloat(style.paddingLeft) || 0) + (parseFloat(style.paddingRight) || 0);
+      const padY = (parseFloat(style.paddingTop) || 0) + (parseFloat(style.paddingBottom) || 0);
+      const maxW = Math.max(40, box.clientWidth - padX);
+      const maxH = Math.max(24, box.clientHeight - padY);
+      const start = parseFloat(style.fontSize) || 18;
+      let lo = 14;
+      let hi = start;
+      let best = lo;
+      for (let i = 0; i < 18; i++) {
+        const mid = (lo + hi) / 2;
+        status.style.fontSize = mid + "px";
+        const parts = status.querySelectorAll(".eojeol, .quote-line");
+        let partFits = true;
+        for (let p = 0; p < parts.length; p++) {
+          if (parts[p].scrollWidth > maxW + 0.5) partFits = false;
+        }
+        if (partFits && status.scrollWidth <= maxW + 0.5 && status.scrollHeight <= maxH + 0.5) {
+          best = mid;
+          lo = mid;
+        } else {
+          hi = mid;
+        }
+      }
+      status.style.fontSize = best.toFixed(2) + "px";
     }
 
-    const selectedImage = weightedRandom(images);
-    const container = document.getElementById("imageContainer");
-    container.innerHTML = '<img src="' + selectedImage.url + '" alt="구강건강 이미지" class="uniform" referrerpolicy="no-referrer">';
-    sendVisitLog(selectedImage);
+    function getGiftOpens() {
+      const n = Number(localStorage.getItem(GIFT_OPENS_KEY) || "0");
+      return Number.isFinite(n) ? Math.max(0, n) : 0;
+    }
 
+    function remainingGifts() {
+      return Math.max(0, GIFT_MAX - getGiftOpens());
+    }
 
-  </script>
-
-  <div id="badgeMessage"></div>
-  <script>
-    function showBadgeMessage(message, isBig = false) {
-      const badgeEl = document.getElementById("badgeMessage");
-      badgeEl.textContent = message;
-      badgeEl.style.display = "block";
-      badgeEl.style.animation = "blinkTwice 3s ease";
-
-      if (isBig) {
-        badgeEl.classList.add("bigBadge");
+    function paintGiftButtons() {
+      const overlayBtn = document.getElementById("gift-open-btn");
+      if (remainingGifts() <= 0) {
+        overlayBtn.hidden = true;
       } else {
-        badgeEl.classList.remove("bigBadge");
+        overlayBtn.hidden = false;
+        overlayBtn.disabled = false;
+        overlayBtn.classList.remove("is-used");
+        overlayBtn.textContent = "🎁 도전 시작하기";
       }
-
-      setTimeout(() => {
-        badgeEl.style.display = "none";
-        badgeEl.style.animation = "";
-      }, 3000);
     }
 
+    function tryOpenGift() {
+      clearCompletePending();
+      if (remainingGifts() <= 0) {
+        hideCompleteOverlay();
+        paintGiftButtons();
+        return;
+      }
+      localStorage.setItem(GIFT_OPENS_KEY, String(getGiftOpens() + 1));
+      let path = window.location.pathname.replace(/complete-preview\.html$/i, "");
+      if (!path.endsWith("/")) path = path.replace(/[^/]*$/, "");
+      const ret = encodeURIComponent(window.location.origin + path);
+      window.location.href = CONFIG.giftGameUrl + "&return=" + ret;
+    }
 
+    function normalizeId(id) {
+      const text = String(id).trim();
+      if (/^\d+$/.test(text) && text.length < 2) {
+        return text.padStart(2, "0");
+      }
+      return text;
+    }
+
+    function getBasePath() {
+      let path = window.location.pathname;
+      if (path.endsWith("/")) return path;
+      if (/\.html?$/i.test(path)) {
+        return path.slice(0, path.lastIndexOf("/") + 1);
+      }
+      return path + "/";
+    }
+
+    function resolveImageSrc(relativePath) {
+      return getBasePath() + relativePath.replace(/^\//, "");
+    }
+
+    function getAvailableImages(count) {
+      const unlocked = CONFIG.images.filter(function (image) {
+        return count >= (image.minCount || 1);
+      });
+      return unlocked.length ? unlocked : CONFIG.images.filter(function (image) {
+        return !image.minCount;
+      });
+    }
+
+    function pickWeightedImage(images) {
+      const total = images.reduce((sum, img) => sum + img.weight, 0);
+      let random = Math.random() * total;
+
+      for (const image of images) {
+        random -= image.weight;
+        if (random <= 0) return image;
+      }
+
+      return images[images.length - 1];
+    }
+
+    function incrementPersonalCount() {
+      const count = Number(localStorage.getItem(STORAGE_KEY) || 0) + 1;
+      localStorage.setItem(STORAGE_KEY, String(count));
+      return count;
+    }
+
+    function loadSeenIds() {
+      try {
+        const raw = localStorage.getItem(SEEN_STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed.map(normalizeId) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveSeenIds(ids) {
+      localStorage.setItem(SEEN_STORAGE_KEY, JSON.stringify(ids));
+    }
+
+    function recordSeenImage(imageId) {
+      const id = normalizeId(imageId);
+      const seen = loadSeenIds();
+      const isNew = seen.indexOf(id) === -1;
+      if (isNew) {
+        seen.push(id);
+        saveSeenIds(seen);
+      }
+      return {
+        isNew: isNew,
+        found: seen.length
+      };
+    }
+
+    let collectionTimer = null;
+    let overlayTimer = null;
+
+    function setCollectionText(found, mode) {
+      const status = document.getElementById("collection-status");
+      const box = document.getElementById("tag-stats");
+      box.classList.remove("is-quote");
+      status.style.fontSize = "";
+
+      if (mode === "new") {
+        status.innerHTML = "✨이미지 20개 중 <strong>" + found + "개</strong> 발견!✨";
+        return;
+      }
+      if (mode === "complete-new") {
+        status.textContent = "✨모든 이미지 발견!✨";
+        return;
+      }
+      if (mode === "keep-going") {
+        status.textContent = "랜덤은 계속된다! 쭈욱~~👀";
+        return;
+      }
+      if (mode === "quote") {
+        status.innerHTML = quoteToEojeolHtml(pickKeepGoingQuote());
+        box.classList.add("is-quote");
+        requestAnimationFrame(fitKeepGoingQuote);
+        return;
+      }
+      if (mode === "wait") {
+        status.textContent = "다음 이미지는 뭘까?";
+        return;
+      }
+      status.innerHTML = "다시 만난 이미지! 현재 <strong>" + found + "개</strong> 발견 중!";
+    }
+
+    function hideCompleteOverlay() {
+      const overlay = document.getElementById("complete-overlay");
+      overlay.classList.remove("is-visible");
+    }
+
+    function fitOverlayLines() {
+      const overlay = document.getElementById("complete-overlay");
+      const lines = overlay.querySelectorAll(".complete-overlay__line");
+      const style = getComputedStyle(overlay);
+      const padX = (parseFloat(style.paddingLeft) || 0) + (parseFloat(style.paddingRight) || 0);
+      const maxWidth = overlay.clientWidth - padX;
+      let size = 16;
+      lines.forEach(function (line) {
+        line.style.fontSize = "";
+      });
+      while (size >= 10) {
+        let fits = true;
+        lines.forEach(function (line) {
+          const use = line.classList.contains("complete-overlay__line--big") ? size * 1.5 : size;
+          line.style.fontSize = use + "px";
+          if (line.scrollWidth > maxWidth) fits = false;
+        });
+        if (fits) break;
+        size -= 0.5;
+      }
+    }
+
+    function showCompleteOverlay() {
+      const overlay = document.getElementById("complete-overlay");
+      overlay.classList.remove("is-visible");
+      void overlay.offsetWidth;
+      overlay.classList.add("is-visible");
+      paintGiftButtons();
+      fitOverlayLines();
+    }
+
+    function renderCollection(found, isNew) {
+      const el = document.getElementById("tag-stats");
+      const complete = found >= COLLECTION_TOTAL;
+
+      if (collectionTimer) {
+        clearTimeout(collectionTimer);
+        collectionTimer = null;
+      }
+      if (overlayTimer) {
+        clearTimeout(overlayTimer);
+        overlayTimer = null;
+      }
+      hideCompleteOverlay();
+
+      el.classList.remove("is-blinking", "is-new-find", "is-short");
+      void el.offsetWidth;
+
+      if (isCompletePending() && remainingGifts() <= 0) {
+        clearCompletePending();
+      }
+
+      if (isCompletePending()) {
+        setCollectionText(found, "keep-going");
+        el.classList.add("is-blinking");
+        showCompleteOverlay();
+        return;
+      }
+
+      if (isNew) {
+        setCollectionText(found, complete ? "complete-new" : "new");
+        el.classList.add("is-new-find");
+        if (complete) {
+          el.classList.add("is-short");
+          if (remainingGifts() > 0) setCompletePending();
+        }
+        collectionTimer = setTimeout(function () {
+          el.classList.remove("is-new-find", "is-short");
+          setCollectionText(found, complete ? "keep-going" : "wait");
+          el.classList.add("is-blinking");
+          if (complete && remainingGifts() > 0) {
+            showCompleteOverlay();
+          }
+        }, 5000);
+        return;
+      }
+
+      setCollectionText(found, complete ? "quote" : "repeat");
+      el.classList.add("is-blinking");
+    }
+
+    function showImage(image) {
+      const img = document.getElementById("hero-image");
+      const skeleton = document.getElementById("skeleton");
+      const baseUrl = resolveImageSrc(image.src);
+      let attempt = 0;
+      const maxAttempts = 2;
+
+      img.classList.remove("is-loaded");
+      skeleton.style.display = "";
+      img.alt = image.alt;
+
+      function loadImage() {
+        const url = attempt === 0
+          ? baseUrl
+          : baseUrl + (baseUrl.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+        img.onload = function () {
+          img.classList.add("is-loaded");
+        };
+        img.onerror = function () {
+          attempt++;
+          if (attempt < maxAttempts) {
+            setTimeout(loadImage, 200);
+            return;
+          }
+          img.classList.add("is-loaded");
+          skeleton.style.display = "none";
+          img.alt = "이미지를 불러올 수 없습니다. 잠시 후 다시 태그해 주세요.";
+        };
+        img.src = url;
+      }
+
+      loadImage();
+    }
+
+    function renderPage(data) {
+      const centerName = data.healthCenterName || CONFIG.healthCenterName;
+      document.getElementById("center-name").textContent = centerName;
+      renderCollection(data.found, data.isNew);
+      showImage(data.image);
+    }
+
+    function getTagSource() {
+      const path = window.location.pathname || "";
+      return path.indexOf("oral-health") !== -1 ? "nfc" : "web";
+    }
+
+    const PENDING_TAGS_KEY = "hc-pending-tags";
+    let pendingSend = false;
+
+    function loadPendingTags() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(PENDING_TAGS_KEY) || "[]");
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function savePendingTags(list) {
+      localStorage.setItem(PENDING_TAGS_KEY, JSON.stringify(list.slice(-40)));
+    }
+
+    function rememberTag(imageId) {
+      const item = {
+        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 10),
+        imageId: normalizeId(imageId),
+        source: getTagSource()
+      };
+      const list = loadPendingTags();
+      list.push(item);
+      savePendingTags(list);
+    }
+
+    function dropPending(ids) {
+      const seen = {};
+      ids.forEach(function (id) { seen[id] = true; });
+      savePendingTags(loadPendingTags().filter(function (item) {
+        return !seen[item.id];
+      }));
+    }
+
+    function sendPendingTags() {
+      const list = loadPendingTags().slice(0, 15);
+      if (!list.length || !CONFIG.appsScriptUrl || pendingSend) return;
+      pendingSend = true;
+      const latest = list[list.length - 1];
+      const callbackName = "hc_bg_" + Date.now();
+      let script;
+      function finish(data) {
+        pendingSend = false;
+        delete window[callbackName];
+        if (script && script.parentNode) script.parentNode.removeChild(script);
+        let progressed = false;
+        if (data && data.saved && data.saved.length) {
+          dropPending(data.saved);
+          progressed = true;
+        } else if (data && !data.error && data.countMode !== "tag-log") {
+          dropPending([latest.id]);
+          progressed = true;
+        }
+        if (progressed && loadPendingTags().length) sendPendingTags();
+      }
+      window[callbackName] = finish;
+      script = document.createElement("script");
+      script.src = CONFIG.appsScriptUrl
+        + "?callback=" + callbackName
+        + "&imageId=" + encodeURIComponent(latest.imageId)
+        + "&source=" + encodeURIComponent(latest.source)
+        + "&tagId=" + encodeURIComponent(latest.id)
+        + "&batch=" + encodeURIComponent(JSON.stringify(list))
+        + "&t=" + Date.now();
+      script.onerror = function () { finish(null); };
+      document.head.appendChild(script);
+    }
+
+    function beaconPendingTags() {
+      const list = loadPendingTags().slice(0, 15);
+      if (!list.length || !CONFIG.appsScriptUrl || !navigator.sendBeacon) return;
+      const blob = new Blob(
+        [JSON.stringify({ tags: list })],
+        { type: "text/plain;charset=UTF-8" }
+      );
+      navigator.sendBeacon(CONFIG.appsScriptUrl, blob);
+    }
+
+    function registerServiceWorker() {
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function (regs) {
+          regs.forEach(function (reg) {
+            reg.unregister();
+          });
+        }).catch(function () {});
+      }
+      if (window.caches) {
+        caches.keys().then(function (keys) {
+          keys.forEach(function (key) {
+            caches.delete(key);
+          });
+        }).catch(function () {});
+      }
+    }
+
+    window.addEventListener("pageshow", function (event) {
+      if (event.persisted) {
+        window.location.reload();
+      }
+    });
+
+    window.addEventListener("pagehide", beaconPendingTags);
+
+    function init() {
+      registerServiceWorker();
+      document.getElementById("center-name").textContent = CONFIG.healthCenterName;
+      document.getElementById("gift-open-btn").addEventListener("click", tryOpenGift);
+      document.getElementById("gift-continue-btn").addEventListener("click", function () {
+        clearCompletePending();
+        hideCompleteOverlay();
+      });
+      window.addEventListener("resize", fitKeepGoingQuote);
+      paintGiftButtons();
+
+      const count = incrementPersonalCount();
+      const image = pickWeightedImage(getAvailableImages(count));
+      const collection = recordSeenImage(image.id);
+
+      rememberTag(image.id);
+      renderPage({
+        count: count,
+        image: image,
+        found: collection.found,
+        isNew: collection.isNew,
+        healthCenterName: CONFIG.healthCenterName
+      });
+
+      sendPendingTags();
+    }
+
+    init();
   </script>
-
-<div class="ai-notice">본 이미지는 AI를 활용하여 제작되었습니다.</div>
-
 </body>
-
 </html>

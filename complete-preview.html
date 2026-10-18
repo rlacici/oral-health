@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#1A2B4A">
+  <title>축하 막 미리보기</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <style>
+    :root {
+      --bg-top: #2D4A7A;
+      --bg-bottom: #1A2B4A;
+      --accent: #FFD166;
+      --text-muted: #A8B8D0;
+      --text-on-dark: #E8EEF8;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100dvh; overflow: hidden; }
+    body {
+      font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", sans-serif;
+      background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+      color: var(--text-on-dark);
+    }
+    .app {
+      max-width: 430px;
+      margin: 0 auto;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: max(4px, calc(2px + var(--safe-top))) 6px max(4px, calc(2px + var(--safe-bottom)));
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 0 4px 4px;
+      width: 100%;
+    }
+    .header__title {
+      font-size: 0.55rem;
+      font-weight: 700;
+      color: var(--bg-bottom);
+      background: linear-gradient(135deg, var(--accent) 0%, #FFC233 100%);
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    .header__center {
+      font-size: calc(0.62rem + 2pt);
+      font-weight: 500;
+    }
+    .tag-line {
+      font-size: calc(1.12rem + 2pt);
+      color: var(--text-muted);
+      text-align: center;
+      padding: 10px 18px;
+      margin: 2px 0 8px;
+      width: fit-content;
+      max-width: calc(100% - 8px);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 999px;
+    }
+    .tag-line.is-new-find.is-short {
+      font-size: calc(1.32rem + 1.5pt);
+      font-weight: 700;
+      color: var(--text-on-dark);
+      animation: new-find-pop 5s ease-out, tag-blink 1s ease-in-out 5;
+    }
+    .tag-line.is-blinking { animation: tag-blink 1s ease-in-out infinite; }
+    @keyframes tag-blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+    @keyframes new-find-pop {
+      0% { transform: scale(1); }
+      16% { transform: scale(1.08); }
+      32% { transform: scale(1); }
+      100% { transform: scale(1); }
+    }
+    .image-stage {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+    }
+    .image-frame {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 10px 36px rgba(0, 0, 0, 0.32);
+    }
+    .image-stage__img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .complete-overlay {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      top: 50%;
+      z-index: 4;
+      display: none;
+      border-radius: 18px;
+      background: rgba(16, 28, 48, 0.86);
+      color: var(--text-on-dark);
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.45;
+      text-align: center;
+      padding: 22px 14px 18px;
+      transform: translateY(-50%);
+    }
+    .complete-overlay__line {
+      display: block;
+      white-space: nowrap;
+      margin: 0 0 8px;
+    }
+
+    .complete-overlay__line--gap {
+      margin-top: 1.15em;
+    }
+
+    .complete-overlay__line--big {
+      font-size: 1.5em;
+      line-height: 1.4;
+      margin-top: 4px;
+    }
+    .complete-overlay__actions {
+      display: flex;
+      align-items: stretch;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .complete-overlay__gift,
+    .complete-overlay__continue {
+      flex: 1 1 0;
+      min-width: 0;
+      min-height: 46px;
+      margin: 0;
+      padding: 10px 8px;
+      border: 0;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: inherit;
+      line-height: 1.25;
+      letter-spacing: -0.03em;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .complete-overlay__gift {
+      background: var(--accent);
+      color: #1A2B4A;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+      animation: gift-pulse 1.2s ease-in-out infinite;
+    }
+    .complete-overlay__continue {
+      background: rgba(255, 255, 255, 0.16);
+      color: #E8EEF8;
+      box-shadow: none;
+    }
+
+    @keyframes gift-pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22); }
+      50% { transform: scale(1.07); box-shadow: 0 8px 22px rgba(255, 209, 102, 0.45); }
+    }
+
+    .complete-overlay__gift.is-used {
+      animation: none;
+      background: #c5cdd8;
+      color: #4a5568;
+      box-shadow: none;
+      cursor: default;
+    }
+    .complete-overlay.is-visible {
+      display: block;
+      animation: overlay-pop 0.45s ease-out;
+    }
+    @keyframes overlay-pop {
+      0% { transform: translateY(-50%) scale(0.96); }
+      12% { transform: translateY(-50%) scale(1); }
+      100% { transform: translateY(-50%) scale(1); }
+    }
+    .ai-notice {
+      font-size: 8pt;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 3px 4px 0;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="header__title">2026 청소년 구강건강 챌린지</div>
+      <div class="header__center">🦷 미추홀구 보건소와 함께해요!</div>
+    </header>
+    <p class="tag-line is-new-find is-short" id="collection-status">✨모든 이미지 발견!✨</p>
+    <div class="image-stage">
+      <div class="image-frame">
+        <img class="image-stage__img" src="images/01.jpg" alt="">
+        <div class="complete-overlay" id="complete-overlay">
+          <span class="complete-overlay__line">여기서 끝인 줄 알았죠?</span>
+          <span class="complete-overlay__line">🎁 이미지를 다 찾은 사람에게 주는<br>깜짝 선물이 있어요!</span>
+          <span class="complete-overlay__line complete-overlay__line--gap">그리고 키링은 앞으로도 계속 태그해 보세요.</span>
+          <span class="complete-overlay__line complete-overlay__line--big">이미지와 함께<br>매번 랜덤 한마디가 나타나요!</span>
+          <div class="complete-overlay__actions">
+            <button type="button" class="complete-overlay__gift" id="gift-open-btn">선물 열어보기</button>
+            <button type="button" class="complete-overlay__continue" id="gift-continue-btn">태그 계속하기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="ai-notice">미리보기 · 실제 태그 횟수는 올라가지 않습니다</p>
+  </div>
+  <script>
+    function fitOverlayLines() {
+      const overlay = document.getElementById("complete-overlay");
+      const lines = overlay.querySelectorAll(".complete-overlay__line");
+      const maxWidth = overlay.clientWidth - 8;
+      let size = 16;
+      while (size >= 10) {
+        let fits = true;
+        lines.forEach(function (line) {
+          const use = line.classList.contains("complete-overlay__line--big") ? size * 1.5 : size;
+          line.style.fontSize = use + "px";
+          if (line.scrollWidth > maxWidth) fits = false;
+        });
+        if (fits) break;
+        size -= 0.5;
+      }
+    }
+    const GIFT_MAX = 1;
+    const GIFT_OPENS_KEY = "hc-gift-opens";
+    const giftBtn = document.getElementById("gift-open-btn");
+
+    function getGiftOpens() {
+      const n = Number(localStorage.getItem(GIFT_OPENS_KEY) || "0");
+      return Number.isFinite(n) ? Math.max(0, n) : 0;
+    }
+
+    function paintGiftButton() {
+      if (getGiftOpens() >= GIFT_MAX) {
+        giftBtn.hidden = true;
+      } else {
+        giftBtn.hidden = false;
+      }
+    }
+
+    const status = document.getElementById("collection-status");
+    const overlay = document.getElementById("complete-overlay");
+    setTimeout(function () {
+      status.classList.remove("is-new-find", "is-short");
+      status.textContent = "랜덤은 계속된다! 쭈욱~~👀";
+      status.classList.add("is-blinking");
+      overlay.classList.add("is-visible");
+      paintGiftButton();
+      fitOverlayLines();
+    }, 5000);
+    document.getElementById("gift-continue-btn").addEventListener("click", function () {
+      overlay.classList.remove("is-visible");
+    });
+    giftBtn.addEventListener("click", function () {
+      if (getGiftOpens() >= GIFT_MAX) return;
+      localStorage.setItem(GIFT_OPENS_KEY, String(getGiftOpens() + 1));
+      let path = window.location.pathname.replace(/complete-preview\.html$/i, "");
+      if (!path.endsWith("/")) path = path.replace(/[^/]*$/, "");
+      const ret = encodeURIComponent(window.location.origin + path);
+      window.location.href = "https://rlacici.github.io/tap-tap-30s/?from=keyring&return=" + ret;
+    });
+  </script>
+</body>
+</html>
